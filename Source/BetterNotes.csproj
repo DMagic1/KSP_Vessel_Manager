@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{56B913D0-2C9E-4251-8059-1D9177DC4945}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BetterNotes</RootNamespace>
+    <AssemblyName>BetterNotes</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\Notes_ExtensionsKSP.cs" />
+    <Compile Include="Framework\Notes_ConfigNodeStorage.cs" />
+    <Compile Include="Framework\Notes_ExtensionsUnity.cs" />
+    <Compile Include="Framework\Notes_MonoBehaviourExtended.cs" />
+    <Compile Include="Framework\Notes_MonoBehaviourWindow.cs" />
+    <Compile Include="Framework\Notes_SkinsLibrary.cs" />
+    <Compile Include="NoteClasses\NotesCheckListContainer.cs" />
+    <Compile Include="NoteClasses\NotesCheckListHandler.cs" />
+    <Compile Include="NoteClasses\NotesPartBase.cs" />
+    <Compile Include="NoteClasses\NotesBase.cs" />
+    <Compile Include="NoteClasses\NotesContainer.cs" />
+    <Compile Include="NoteClasses\NotesContractContainer.cs" />
+    <Compile Include="NoteClasses\NotesVesselLog.cs" />
+    <Compile Include="NoteClasses\NotesVitalStats.cs" />
+    <Compile Include="NotesCore.cs" />
+    <Compile Include="NoteClasses\NotesCrewContainer.cs" />
+    <Compile Include="NoteClasses\NotesDataContainer.cs" />
+    <Compile Include="NoteClasses\NotesExpContainer.cs" />
+    <Compile Include="NotesMainMenu.cs" />
+    <Compile Include="NotesScenario.cs" />
+    <Compile Include="NotesSettings.cs" />
+    <Compile Include="NoteClasses\NotesTextContainer.cs" />
+    <Compile Include="NoteClasses\NotesType.cs" />
+    <Compile Include="NoteUIObjects\NoteContractButton.cs" />
+    <Compile Include="NoteUIObjects\NoteCrewButton.cs" />
+    <Compile Include="NoteUIObjects\NoteDataButton.cs" />
+    <Compile Include="NoteUIObjects\NoteExpButton.cs" />
+    <Compile Include="NoteUIObjects\NoteCheckListButton.cs" />
+    <Compile Include="NoteUIObjects\NoteTextButton.cs" />
+    <Compile Include="NoteUIObjects\NoteUIObjectBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
