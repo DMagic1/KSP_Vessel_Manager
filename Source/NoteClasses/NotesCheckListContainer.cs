@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using BetterNotes.Framework;
+using BetterNotes.NoteClasses.CheckListHandler;
 
 namespace BetterNotes.NoteClasses
 {
@@ -89,6 +90,7 @@ namespace BetterNotes.NoteClasses
 					break;
 				case NotesCheckListType.land:
 				case NotesCheckListType.orbit:
+				case NotesCheckListType.blastOff:
 					targetBody = targetB;
 					targetVessel = null;
 					break;
