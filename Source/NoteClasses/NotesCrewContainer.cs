@@ -149,19 +149,19 @@ namespace BetterNotes.NoteClasses
 			{
 				case "Pilot":
 					iconColor = NotesMainMenu.Settings.PilotIconColor;
-					return new Texture2D(1, 1);
+					return NotesResources.pilotIcon;
 				case "Engineer":
 					iconColor = NotesMainMenu.Settings.EngineerIconColor;
-					return new Texture2D(1, 1);
+					return NotesResources.engineerIcon;
 				case "Scientist":
 					iconColor = NotesMainMenu.Settings.ScientistIconColor;
-					return new Texture2D(1, 1);
+					return NotesResources.scientistIcon;
 				case "Tourist":
 					iconColor = NotesMainMenu.Settings.TouristIconColor;
-					return new Texture2D(1, 1);
+					return NotesResources.touristIcon;
 				default:
 					iconColor = XKCDColors.White;
-					return new Texture2D(1, 1);
+					return NotesResources.defaultIcon;
 			}
 		}
 
@@ -170,19 +170,19 @@ namespace BetterNotes.NoteClasses
 			switch(i)
 			{
 				case 0:
-					return new Texture2D(1, 1);
+					return NotesResources.levelZero;
 				case 1:
-					return new Texture2D(1, 1);
+					return NotesResources.levelOne;
 				case 2:
-					return new Texture2D(1, 1);
+					return NotesResources.levelTwo;
 				case 3:
-					return new Texture2D(1, 1);
+					return NotesResources.levelThree;
 				case 4:
-					return new Texture2D(1, 1);
+					return NotesResources.levelFour;
 				case 5:
-					return new Texture2D(1, 1);
+					return NotesResources.levelFive;
 				default:
-					return new Texture2D(1, 1);
+					return NotesResources.levelZero;
 			}
 		}
 
