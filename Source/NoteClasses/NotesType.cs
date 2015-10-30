@@ -32,6 +32,7 @@ namespace BetterNotes.NoteClasses
 	{
 		Experiments = 1,
 		Data = 2,
+		ReturnedData = 3,
 	}
 
 	public enum VesselSubType
@@ -43,7 +44,8 @@ namespace BetterNotes.NoteClasses
 	public enum ContractsSubType
 	{
 		ActiveContracts = 1,
-		AllContracts = 2,
-		ContractsPlusMissions = 3,
+		FinishedContracts = 2,
+		AllContracts = 3,
+		ContractsPlusMissions = 4,
 	}
 }
