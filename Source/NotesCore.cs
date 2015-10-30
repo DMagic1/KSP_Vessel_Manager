@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using BetterNotes.Framework;
 using BetterNotes.NoteClasses;
+using BetterNotes.NoteClasses.CheckListHandler;
 using Contracts;
 
 namespace BetterNotes
@@ -14,6 +15,7 @@ namespace BetterNotes
 	{
 		private static bool loaded = false;
 		private static NotesCore instance;
+		private NotesCheckListMonoBehaviour checkListMono;
 		private Dictionary<Guid, Vessel> activeVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, Vessel> allVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, NotesContainer> allNotes = new Dictionary<Guid, NotesContainer>();
@@ -24,6 +26,11 @@ namespace BetterNotes
 		public static NotesCore Instance
 		{
 			get { return instance; }
+		}
+
+		public NotesCheckListMonoBehaviour CheckListMono
+		{
+			get { return checkListMono; }
 		}
 
 		public void addNotes(NotesContainer n)
@@ -86,6 +93,8 @@ namespace BetterNotes
 				DontDestroyOnLoad(this);
 				loaded = true;
 				startup();
+
+				checkListMono = gameObject.AddComponent<NotesCheckListMonoBehaviour>();
 			}
 		}
 
@@ -130,6 +139,9 @@ namespace BetterNotes
 			GameEvents.Contract.onContractsLoaded.Remove(onLoadContracts);
 
 			NotesCheckListTypeHandler.deRegisterEvents();
+
+			if (checkListMono != null)
+				Destroy(checkListMono);
 		}
 
 		private void onAddContract(Contract c)
