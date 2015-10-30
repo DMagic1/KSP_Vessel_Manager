@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using BetterNotes.Framework;
 using BetterNotes.NoteClasses;
+using BetterNotes.NoteClasses.CheckListHandler;
 
 namespace BetterNotes
 {
@@ -298,6 +299,7 @@ namespace BetterNotes
 								break;
 							case NotesCheckListType.launch:
 							case NotesCheckListType.land:
+							case NotesCheckListType.blastOff:
 							case NotesCheckListType.orbit:
 							case NotesCheckListType.returnHome:
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);

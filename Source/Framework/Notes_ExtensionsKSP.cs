@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 using BetterNotes.NoteClasses;
+using BetterNotes.NoteClasses.CheckListHandler;
 
 namespace BetterNotes.Framework
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using BetterNotes.NoteClasses;
+using BetterNotes.NoteClasses.CheckListHandler;
 
 namespace BetterNotes.NoteUIObjects
 {
