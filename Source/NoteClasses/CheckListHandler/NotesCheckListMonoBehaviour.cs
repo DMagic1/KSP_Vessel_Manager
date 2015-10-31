@@ -33,13 +33,13 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 
 		private IEnumerator blastOffWatcher(Vessel v, NotesCheckListItem n)
 		{
-			int timer = 0;
+			float timer = 0;
 			double targetAlt = 0;
 
 			if (v.mainBody.atmosphere)
-				targetAlt = v.mainBody.atmosphereDepth / 10;
+				targetAlt = v.mainBody.atmosphereDepth / 20;
 			else
-				targetAlt = v.mainBody.Radius / 100;
+				targetAlt = v.mainBody.Radius / 200;
 
 			while (timer < 300)
 			{
@@ -55,12 +55,16 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 							yield break;
 						}
 
-						timer++;
+						timer += TimeWarp.deltaTime;
+
+						n.Text = string.Format("Take off from {0}\n(Achieve {1:F0}m within {2:F0}sec)", n.TargetBody.theName, targetAlt, timer);
 
 						yield return null;
 						break;
 				}
 			}
+
+			n.Text = string.Format("Take off from {0}", n.TargetBody.theName);
 		}
 
 
