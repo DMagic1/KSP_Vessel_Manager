@@ -92,6 +92,19 @@ namespace BetterNotes.Framework
 			return original;
 		}
 
+		public static float? parse(this ConfigNode node, string name, float? original)
+		{
+			if (!node.HasValue(name))
+				return original;
+
+			float f = original == null ? 0 : (float)original;
+
+			if (float.TryParse(node.GetValue(name), out f))
+				return (float?)f;
+
+			return original;
+		}
+
 		public static double parse(this ConfigNode node, string name, double original)
 		{
 			if (!node.HasValue(name))

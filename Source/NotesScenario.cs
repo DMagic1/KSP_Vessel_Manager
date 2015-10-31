@@ -161,12 +161,13 @@ namespace BetterNotes
 						string text = checkListItem.GetValue("NOTE");
 						int order = checkListItem.parse("ORDER", j);
 						bool complete = checkListItem.parse("COMPLETE", false);
+						float? data = checkListItem.parse("DATA", (float?)null);
 						Guid id = checkListItem.parse("KEY", Guid.NewGuid());
 						NotesCheckListType type = checkListItem.parse("TYPE", NotesCheckListType.custom);
 						Vessel targetV = checkListItem.parse("TARGET_VESSEL", (Vessel)null);
 						CelestialBody targetB = checkListItem.parse("TARGET_BODY", (CelestialBody)null);
 
-						NotesCheckListItem newCheckListItem = new NotesCheckListItem(text, order, complete, targetV, targetB, id, type, c);
+						NotesCheckListItem newCheckListItem = new NotesCheckListItem(text, order, complete, targetV, targetB, id, type, c, data);
 
 						c.addCheckList(newCheckListItem);
 					}
@@ -301,7 +302,18 @@ namespace BetterNotes
 							case NotesCheckListType.land:
 							case NotesCheckListType.blastOff:
 							case NotesCheckListType.orbit:
+							case NotesCheckListType.enterOrbit:
+							case NotesCheckListType.returnToOrbit:
 							case NotesCheckListType.returnHome:
+								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
+								break;
+							case NotesCheckListType.science:
+								if (c.Data != null)
+									checkItem.AddValue("DATA", c.Data);
+								break;
+							case NotesCheckListType.scienceFromPlanet:
+								if (c.Data != null)
+									checkItem.AddValue("DATA", c.Data);
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
 								break;
 						}
