@@ -52,8 +52,10 @@
     <Compile Include="Framework\Notes_MonoBehaviourExtended.cs" />
     <Compile Include="Framework\Notes_MonoBehaviourWindow.cs" />
     <Compile Include="Framework\Notes_SkinsLibrary.cs" />
+    <Compile Include="NoteClasses\CheckListHandler\NotesCheckListHandler.cs" />
+    <Compile Include="NoteClasses\CheckListHandler\NotesCheckListMonoBehaviour.cs" />
+    <Compile Include="NoteClasses\CheckListHandler\NotesCheckListType.cs" />
     <Compile Include="NoteClasses\NotesCheckListContainer.cs" />
-    <Compile Include="NoteClasses\NotesCheckListHandler.cs" />
     <Compile Include="NoteClasses\NotesPartBase.cs" />
     <Compile Include="NoteClasses\NotesBase.cs" />
     <Compile Include="NoteClasses\NotesContainer.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="NoteClasses\NotesDataContainer.cs" />
     <Compile Include="NoteClasses\NotesExpContainer.cs" />
     <Compile Include="NotesMainMenu.cs" />
+    <Compile Include="NotesResources.cs" />
     <Compile Include="NotesScenario.cs" />
     <Compile Include="NotesSettings.cs" />
     <Compile Include="NoteClasses\NotesTextContainer.cs" />
