@@ -53,9 +53,7 @@ namespace BetterNotes.NoteClasses
 			if (!returnedData.ContainsKey(n.ID))
 				returnedData.Add(n.ID, n);
 			else
-			{
 				returnedData[n.ID].updateData(n);
-			}
 		}
 
 		public NotesDataPart getNotesData(uint id)
