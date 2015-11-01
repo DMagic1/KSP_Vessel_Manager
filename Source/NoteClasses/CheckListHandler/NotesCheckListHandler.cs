@@ -436,6 +436,9 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (pv == null)
 				return;
 
+			if (sub == null)
+				return;
+
 			if (pv.vesselRef.mainBody == null)
 				return;
 
@@ -455,7 +458,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 					if (n.TargetBody == null)
 						continue;
 
-					if(pv.vesselRef.mainBody != n.TargetBody)
+					if (!sub.IsFromBody(n.TargetBody))
 						continue;
 				}
 
