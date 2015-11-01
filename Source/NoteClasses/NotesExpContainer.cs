@@ -41,13 +41,9 @@ namespace BetterNotes.NoteClasses
 				if (p == null)
 					continue;
 
-				if (p.Modules.Contains("ModuleScienceExperiment"))
-					validParts.Add(p);
-				else if (p.Modules.Contains(""))
-					validParts.Add(p);
-				else if (p.Modules.Contains(""))
-					validParts.Add(p);
-				else if (p.Modules.Contains(""))
+				var exps = p.FindModulesImplementing<ModuleScienceExperiment>();
+
+				if (exps.Count > 0)
 					validParts.Add(p);
 			}
 		}
