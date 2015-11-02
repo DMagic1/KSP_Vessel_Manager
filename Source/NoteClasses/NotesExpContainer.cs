@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using BetterNotes.Framework;
 
@@ -67,10 +68,25 @@ namespace BetterNotes.NoteClasses
 
 				n.clearExp();
 
+				var exps = p.FindModulesImplementing<ModuleScienceExperiment>();
 
+				for (int j = 0; j < exps.Count; j++)
+				{
+					ModuleScienceExperiment sciExp = exps[j];
 
+					if (sciExp == null)
+						continue;
 
+					if (string.IsNullOrEmpty(sciExp.experimentID))
+						continue;
 
+					ScienceExperiment exp = ResearchAndDevelopment.GetExperiment(sciExp.experimentID);
+
+					if (exp == null)
+						continue;
+
+					n.addPartExperiment(sciExp, exp);
+				}
 
 				if (n.ExpCount > 0)
 				{
@@ -98,6 +114,14 @@ namespace BetterNotes.NoteClasses
 			allExperiments.Clear();
 		}
 
+		public void addPartExperiment(ModuleScienceExperiment m, ScienceExperiment e)
+		{
+			NotesExperiment exp = new NotesExperiment(this, m, e, 1);
+
+			if (!allExperiments.Contains(exp))
+				allExperiments.Add(exp);
+		}
+
 		public void addPartExperiment(NotesExperiment e)
 		{
 			if (!allExperiments.Contains(e))
@@ -118,15 +142,19 @@ namespace BetterNotes.NoteClasses
 	public class NotesExperiment
 	{
 		private NotesExpPart root;
+		private ModuleScienceExperiment experimentModule;
+		private ScienceExperiment experiment;
 		private bool inactive = false;
 		private bool dataCollected = false;
 		private string name = "";
 		private int dataLimit = 1;
 
-		public NotesExperiment(NotesExpPart r, string n, int limit)
+		public NotesExperiment(NotesExpPart r, ModuleScienceExperiment m, ScienceExperiment e, int limit = 1)
 		{
 			root = r;
-			name = n;
+			experimentModule = m;
+			experiment = e;
+			name = e.experimentTitle;
 			dataLimit = limit;
 		}
 
@@ -136,6 +164,37 @@ namespace BetterNotes.NoteClasses
 			dataCollected = C;
 			name = N;
 			dataLimit = L;
+		}
+
+		//This one is borrowed from Science Alert to deploy the experiment using the method from any derived modules
+		// https://bitbucket.org/xEvilReeperx/ksp_sciencealert/src/687114a3dcdbb2cc64a0f280bac698ebb5c918c2/ScienceAlert/Experiments/Observers/ExperimentObserver.cs?at=1.8.9&fileviewer=file-view-default#ExperimentObserver.cs-426:439 
+		public bool deployExperiment()
+		{
+			if (FlightGlobals.ActiveVessel == null)
+			{
+				return false;
+			}
+
+			if (FlightGlobals.ActiveVessel != root.Part.vessel)
+			{
+				return false;
+			}
+
+			if (experimentModule == null)
+			{
+				return false;
+			}
+
+			try
+			{
+				experimentModule.GetType().InvokeMember("DeployExperiment", BindingFlags.Public | BindingFlags.IgnoreReturn | BindingFlags.InvokeMethod, null, experimentModule, null);
+			}
+			catch (Exception e)
+			{
+				experimentModule.DeployExperiment();
+			}
+
+			return true;
 		}
 
 		public NotesExpPart Root
