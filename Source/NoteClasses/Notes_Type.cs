@@ -6,7 +6,7 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public enum NotesType
+	public enum Notes_Type
 	{
 		Vessels = 1,
 		HomePage = 2,

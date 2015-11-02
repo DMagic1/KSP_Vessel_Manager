@@ -7,20 +7,20 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesExpContainer : NotesPartBase
+	public class Notes_ExpContainer : Notes_PartBase
 	{
-		private Dictionary<uint, NotesExpPart> expParts = new Dictionary<uint, NotesExpPart>();
+		private Dictionary<uint, Notes_ExpPart> expParts = new Dictionary<uint, Notes_ExpPart>();
 
-		public NotesExpContainer()
+		public Notes_ExpContainer()
 		{ }
 
-		public NotesExpContainer(NotesContainer n)
+		public Notes_ExpContainer(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesExpPart getExpNotes(uint id)
+		public Notes_ExpPart getExpNotes(uint id)
 		{
 			if (expParts.ContainsKey(id))
 				return expParts[id];
@@ -61,10 +61,10 @@ namespace BetterNotes.NoteClasses
 				if (p == null)
 					continue;
 
-				NotesExpPart n = getExpNotes(p.flightID);
+				Notes_ExpPart n = getExpNotes(p.flightID);
 
 				if (n == null)
-					n = new NotesExpPart(p);
+					n = new Notes_ExpPart(p);
 
 				n.clearExp();
 
@@ -99,12 +99,12 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesExpPart
+	public class Notes_ExpPart
 	{
-		private List<NotesExperiment> allExperiments = new List<NotesExperiment>();
+		private List<Notes_Experiment> allExperiments = new List<Notes_Experiment>();
 		private Part part;
 
-		public NotesExpPart(Part p)
+		public Notes_ExpPart(Part p)
 		{
 			part = p;
 		}
@@ -116,13 +116,13 @@ namespace BetterNotes.NoteClasses
 
 		public void addPartExperiment(ModuleScienceExperiment m, ScienceExperiment e)
 		{
-			NotesExperiment exp = new NotesExperiment(this, m, e, 1);
+			Notes_Experiment exp = new Notes_Experiment(this, m, e, 1);
 
 			if (!allExperiments.Contains(exp))
 				allExperiments.Add(exp);
 		}
 
-		public void addPartExperiment(NotesExperiment e)
+		public void addPartExperiment(Notes_Experiment e)
 		{
 			if (!allExperiments.Contains(e))
 				allExperiments.Add(e);
@@ -139,9 +139,9 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesExperiment
+	public class Notes_Experiment
 	{
-		private NotesExpPart root;
+		private Notes_ExpPart root;
 		private ModuleScienceExperiment experimentModule;
 		private ScienceExperiment experiment;
 		private bool inactive = false;
@@ -149,7 +149,7 @@ namespace BetterNotes.NoteClasses
 		private string name = "";
 		private int dataLimit = 1;
 
-		public NotesExperiment(NotesExpPart r, ModuleScienceExperiment m, ScienceExperiment e, int limit = 1)
+		public Notes_Experiment(Notes_ExpPart r, ModuleScienceExperiment m, ScienceExperiment e, int limit = 1)
 		{
 			root = r;
 			experimentModule = m;
@@ -197,7 +197,7 @@ namespace BetterNotes.NoteClasses
 			return true;
 		}
 
-		public NotesExpPart Root
+		public Notes_ExpPart Root
 		{
 			get { return root; }
 		}

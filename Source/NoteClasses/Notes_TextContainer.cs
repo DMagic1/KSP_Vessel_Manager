@@ -6,20 +6,20 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesTextContainer : NotesBase
+	public class Notes_TextContainer : Notes_Base
 	{
-		private Dictionary<Guid, TextNotes> notes = new Dictionary<Guid, TextNotes>();
+		private Dictionary<Guid, Notes_TextItem> notes = new Dictionary<Guid, Notes_TextItem>();
 
-		public NotesTextContainer()
+		public Notes_TextContainer()
 		{ }
 
-		public NotesTextContainer(NotesContainer n)
+		public Notes_TextContainer(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesTextContainer(NotesTextContainer copy, NotesContainer n)
+		public Notes_TextContainer(Notes_TextContainer copy, Notes_Container n)
 		{
 			notes = copy.notes;
 			root = n;
@@ -31,7 +31,7 @@ namespace BetterNotes.NoteClasses
 			get { return notes.Count; }
 		}
 
-		public TextNotes getNote(int index, bool warn = false)
+		public Notes_TextItem getNote(int index, bool warn = false)
 		{
 			if (notes.Count > index)
 				return notes.ElementAt(index).Value;
@@ -41,7 +41,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public TextNotes getNote(Guid id)
+		public Notes_TextItem getNote(Guid id)
 		{
 			if (notes.ContainsKey(id))
 				return notes[id];
@@ -49,7 +49,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public void addNote(TextNotes note)
+		public void addNote(Notes_TextItem note)
 		{
 			if (!notes.ContainsKey(note.ID))
 				notes.Add(note.ID, note);
@@ -57,7 +57,7 @@ namespace BetterNotes.NoteClasses
 
 	}
 
-	public class TextNotes
+	public class Notes_TextItem
 	{
 		private string text;
 		private string title;
@@ -65,14 +65,14 @@ namespace BetterNotes.NoteClasses
 		private DateTime createTime;
 		private DateTime editTime;
 
-		public TextNotes(DateTime time)
+		public Notes_TextItem(DateTime time)
 		{
 			createTime = time;
 			editTime = time;
 			key = Guid.NewGuid();
 		}
 
-		public TextNotes(string note, string t, Guid id, DateTime create, DateTime edit)
+		public Notes_TextItem(string note, string t, Guid id, DateTime create, DateTime edit)
 		{
 			text = note;
 			title = t;

@@ -11,29 +11,29 @@ using Contracts;
 namespace BetterNotes
 {
 	[KSPAddon(KSPAddon.Startup.MainMenu, true)]
-	public class NotesCore : Notes_MBE
+	public class Notes_Core : Notes_MBE
 	{
 		private static bool loaded = false;
-		private static NotesCore instance;
-		private NotesCheckListMonoBehaviour checkListMono;
+		private static Notes_Core instance;
+		private Notes_CheckListMonoBehaviour checkListMono;
 		private Dictionary<Guid, Vessel> activeVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, Vessel> allVessels = new Dictionary<Guid, Vessel>();
-		private Dictionary<Guid, NotesContainer> allNotes = new Dictionary<Guid, NotesContainer>();
-		private Dictionary<Guid, NotesContractInfo> allContracts = new Dictionary<Guid, NotesContractInfo>();
+		private Dictionary<Guid, Notes_Container> allNotes = new Dictionary<Guid, Notes_Container>();
+		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
 
 		private Vessel activeVessel;
 
-		public static NotesCore Instance
+		public static Notes_Core Instance
 		{
 			get { return instance; }
 		}
 
-		public NotesCheckListMonoBehaviour CheckListMono
+		public Notes_CheckListMonoBehaviour CheckListMono
 		{
 			get { return checkListMono; }
 		}
 
-		public void addNotes(NotesContainer n)
+		public void addNotes(Notes_Container n)
 		{
 			if (allNotes.ContainsKey(n.ID))
 			{
@@ -43,7 +43,7 @@ namespace BetterNotes
 				allNotes.Add(n.ID, n);
 		}
 
-		public NotesContainer getNotes(Guid id)
+		public Notes_Container getNotes(Guid id)
 		{
 			if (allNotes.ContainsKey(id))
 				return allNotes[id];
@@ -56,7 +56,7 @@ namespace BetterNotes
 			get { return allNotes.Count; }
 		}
 
-		public NotesContainer getNotes(int index, bool warn = false)
+		public Notes_Container getNotes(int index, bool warn = false)
 		{
 			if (allNotes.Count > index)
 				return allNotes.ElementAt(index).Value;
@@ -66,19 +66,19 @@ namespace BetterNotes
 			return null;
 		}
 
-		public void addContract(NotesContractInfo C)
+		public void addContract(Notes_ContractInfo C)
 		{
 			if (!allContracts.ContainsKey(C.ID))
 				allContracts.Add(C.ID, C);
 		}
 
-		public void removeContract(NotesContractInfo C)
+		public void removeContract(Notes_ContractInfo C)
 		{
 			if (allContracts.ContainsKey(C.ID))
 				allContracts.Remove(C.ID);
 		}
 
-		public NotesContractInfo getContract(Guid id)
+		public Notes_ContractInfo getContract(Guid id)
 		{
 			if (allContracts.ContainsKey(id))
 				return allContracts[id];
@@ -94,7 +94,7 @@ namespace BetterNotes
 				loaded = true;
 				startup();
 
-				checkListMono = gameObject.AddComponent<NotesCheckListMonoBehaviour>();
+				checkListMono = gameObject.AddComponent<Notes_CheckListMonoBehaviour>();
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace BetterNotes
 			GameEvents.Contract.onFinished.Add(onFinishContract);
 			GameEvents.Contract.onContractsLoaded.Add(onLoadContracts);
 
-			NotesCheckListTypeHandler.registerEvents();
+			Notes_CheckListTypeHandler.registerEvents();
 
 			if (HighLogic.LoadedSceneIsFlight)
 				activeVessel = FlightGlobals.ActiveVessel;
@@ -138,7 +138,7 @@ namespace BetterNotes
 			GameEvents.Contract.onFinished.Remove(onFinishContract);
 			GameEvents.Contract.onContractsLoaded.Remove(onLoadContracts);
 
-			NotesCheckListTypeHandler.deRegisterEvents();
+			Notes_CheckListTypeHandler.deRegisterEvents();
 
 			if (checkListMono != null)
 				Destroy(checkListMono);
@@ -146,7 +146,7 @@ namespace BetterNotes
 
 		private void onAddContract(Contract c)
 		{
-			NotesContractInfo N = new NotesContractInfo(c);
+			Notes_ContractInfo N = new Notes_ContractInfo(c);
 
 			addContract(N);
 
@@ -155,7 +155,7 @@ namespace BetterNotes
 
 		private void onFinishContract(Contract c)
 		{
-			NotesContractInfo C = getContract(c.ContractGuid);
+			Notes_ContractInfo C = getContract(c.ContractGuid);
 
 			if (C != null)
 				removeContract(C);
@@ -165,7 +165,7 @@ namespace BetterNotes
 
 		private void refreshContracts()
 		{
-			NotesContainer n = getNotes(activeVessel.id);
+			Notes_Container n = getNotes(activeVessel.id);
 
 			if (n == null)
 				return;
@@ -177,7 +177,7 @@ namespace BetterNotes
 		{
 			activeVessel = v;
 
-			NotesContainer n = getNotes(v.id);
+			Notes_Container n = getNotes(v.id);
 
 			if (n == null)
 				return;
@@ -193,7 +193,7 @@ namespace BetterNotes
 			if (pV.vesselID == null)
 				return;
 
-			NotesContainer n = getNotes(pV.vesselID);
+			Notes_Container n = getNotes(pV.vesselID);
 
 			if (n == null)
 				return;
@@ -203,7 +203,7 @@ namespace BetterNotes
 
 			double time = Planetarium.GetUniversalTime();
 
-			NotesReceivedData o = new NotesReceivedData(sub, value, (int)time);
+			Notes_ReceivedData o = new Notes_ReceivedData(sub, value, (int)time);
 
 			n.Data.addReturnedData(o);
 		}
@@ -231,7 +231,7 @@ namespace BetterNotes
 				if (c == null)
 					continue;
 
-				NotesContractInfo n = new NotesContractInfo(c);
+				Notes_ContractInfo n = new Notes_ContractInfo(c);
 
 				if (c == null)
 					continue;
@@ -244,7 +244,7 @@ namespace BetterNotes
 
 			LogFormatted("{0} Contracts Loaded", allContracts.Count);
 
-			foreach (NotesContainer n in allNotes.Values)
+			foreach (Notes_Container n in allNotes.Values)
 			{
 				if (n == null)
 					continue;

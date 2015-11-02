@@ -6,7 +6,7 @@ using BetterNotes.Framework;
 
 namespace BetterNotes
 {
-	public class NotesSettings : Notes_ConfigNodeStorage
+	public class Notes_Settings : Notes_ConfigNodeStorage
 	{
 		[Persistent]
 		private bool showDebris = false;
@@ -27,7 +27,7 @@ namespace BetterNotes
 		[Persistent]
 		private Color32 touristIconColor = XKCDColors.SapGreen;
 
-		public NotesSettings(string path, string node)
+		public Notes_Settings(string path, string node)
 		{
 			FilePath = path;
 			NodeName = path + "/" + node;

@@ -227,12 +227,12 @@ namespace BetterNotes.Framework
 			}
 		}
 
-		public static NotesCheckListType parse(this ConfigNode node, string name, NotesCheckListType original)
+		public static Notes_CheckListType parse(this ConfigNode node, string name, Notes_CheckListType original)
 		{
 			if (!node.HasValue(name))
 				return original;
 
-			NotesCheckListType n = original;
+			Notes_CheckListType n = original;
 
 			string s = node.GetValue(name);
 
@@ -242,7 +242,7 @@ namespace BetterNotes.Framework
 			{
 				try
 				{
-					n = (NotesCheckListType)Enum.Parse(typeof(NotesCheckListType), s);
+					n = (Notes_CheckListType)Enum.Parse(typeof(Notes_CheckListType), s);
 				}
 				catch (Exception e)
 				{

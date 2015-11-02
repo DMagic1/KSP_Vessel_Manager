@@ -8,7 +8,7 @@ using BetterNotes.NoteClasses;
 
 namespace BetterNotes.NoteUIObjects
 {
-	public abstract class NoteUIObjectBase : MonoBehaviour
+	public abstract class Notes_UIObjectBase : MonoBehaviour
 	{
 		protected abstract void OnLeftClick();
 		protected abstract void OnRightClick();

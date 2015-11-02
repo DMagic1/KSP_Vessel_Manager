@@ -8,20 +8,20 @@ using Experience.Effects;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesCrewContainer : NotesPartBase
+	public class Notes_CrewContainer : Notes_PartBase
 	{
-		private Dictionary<uint, NotesCrewPart> allCrew = new Dictionary<uint, NotesCrewPart>();
+		private Dictionary<uint, Notes_CrewPart> allCrew = new Dictionary<uint, Notes_CrewPart>();
 
-		public NotesCrewContainer()
+		public Notes_CrewContainer()
 		{ }
 
-		public NotesCrewContainer(NotesContainer n)
+		public Notes_CrewContainer(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesCrewPart getCrewNotes(uint id)
+		public Notes_CrewPart getCrewNotes(uint id)
 		{
 			if (allCrew.ContainsKey(id))
 				return allCrew[id];
@@ -60,10 +60,10 @@ namespace BetterNotes.NoteClasses
 				if (p == null)
 					continue;
 
-				NotesCrewPart n = getCrewNotes(p.flightID);
+				Notes_CrewPart n = getCrewNotes(p.flightID);
 
 				if (n == null)
-					n = new NotesCrewPart(p);
+					n = new Notes_CrewPart(p);
 
 				n.clearCrew();
 
@@ -88,12 +88,12 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesCrewPart
+	public class Notes_CrewPart
 	{
-		private List<NotesCrewObject> partCrew = new List<NotesCrewObject>();
+		private List<Notes_CrewObject> partCrew = new List<Notes_CrewObject>();
 		private Part part;
 
-		public NotesCrewPart(Part p)
+		public Notes_CrewPart(Part p)
 		{
 			part = p;
 		}
@@ -105,7 +105,7 @@ namespace BetterNotes.NoteClasses
 
 		public void addPartCrew(ProtoCrewMember c)
 		{
-			NotesCrewObject n = new NotesCrewObject(c, this);
+			Notes_CrewObject n = new Notes_CrewObject(c, this);
 
 			if (!partCrew.Contains(n))
 				partCrew.Add(n);
@@ -116,7 +116,7 @@ namespace BetterNotes.NoteClasses
 			get { return partCrew.Count; }
 		}
 
-		public List<NotesCrewObject> PartCrew
+		public List<Notes_CrewObject> PartCrew
 		{
 			get { return partCrew; }
 		}
@@ -127,15 +127,15 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesCrewObject
+	public class Notes_CrewObject
 	{
 		private ProtoCrewMember crew;
-		private NotesCrewPart root;
+		private Notes_CrewPart root;
 		private Texture2D profIcon;
 		private Texture2D levelIcon;
 		private Color32 iconColor;
 
-		public NotesCrewObject(ProtoCrewMember c, NotesCrewPart r)
+		public Notes_CrewObject(ProtoCrewMember c, Notes_CrewPart r)
 		{
 			crew = c;
 			root = r;
@@ -148,20 +148,20 @@ namespace BetterNotes.NoteClasses
 			switch(t.Title)
 			{
 				case "Pilot":
-					iconColor = NotesMainMenu.Settings.PilotIconColor;
-					return NotesResources.pilotIcon;
+					iconColor = Notes_MainMenu.Settings.PilotIconColor;
+					return Notes_Resources.pilotIcon;
 				case "Engineer":
-					iconColor = NotesMainMenu.Settings.EngineerIconColor;
-					return NotesResources.engineerIcon;
+					iconColor = Notes_MainMenu.Settings.EngineerIconColor;
+					return Notes_Resources.engineerIcon;
 				case "Scientist":
-					iconColor = NotesMainMenu.Settings.ScientistIconColor;
-					return NotesResources.scientistIcon;
+					iconColor = Notes_MainMenu.Settings.ScientistIconColor;
+					return Notes_Resources.scientistIcon;
 				case "Tourist":
-					iconColor = NotesMainMenu.Settings.TouristIconColor;
-					return NotesResources.touristIcon;
+					iconColor = Notes_MainMenu.Settings.TouristIconColor;
+					return Notes_Resources.touristIcon;
 				default:
 					iconColor = XKCDColors.White;
-					return NotesResources.defaultIcon;
+					return Notes_Resources.defaultIcon;
 			}
 		}
 
@@ -170,19 +170,19 @@ namespace BetterNotes.NoteClasses
 			switch(i)
 			{
 				case 0:
-					return NotesResources.levelZero;
+					return Notes_Resources.levelZero;
 				case 1:
-					return NotesResources.levelOne;
+					return Notes_Resources.levelOne;
 				case 2:
-					return NotesResources.levelTwo;
+					return Notes_Resources.levelTwo;
 				case 3:
-					return NotesResources.levelThree;
+					return Notes_Resources.levelThree;
 				case 4:
-					return NotesResources.levelFour;
+					return Notes_Resources.levelFour;
 				case 5:
-					return NotesResources.levelFive;
+					return Notes_Resources.levelFive;
 				default:
-					return NotesResources.levelZero;
+					return Notes_Resources.levelZero;
 			}
 		}
 
@@ -191,7 +191,7 @@ namespace BetterNotes.NoteClasses
 			get { return crew; }
 		}
 
-		public NotesCrewPart Root
+		public Notes_CrewPart Root
 		{
 			get { return root; }
 		}

@@ -6,21 +6,21 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesVesselLog : NotesBase
+	public class Notes_VesselLog : Notes_Base
 	{
 		private Vector2d targetLocation;
 		private FlightLog shipsLog;
 
-		public NotesVesselLog()
+		public Notes_VesselLog()
 		{ }
 
-		public NotesVesselLog(NotesContainer n)
+		public Notes_VesselLog(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesVesselLog(NotesVesselLog copy, NotesContainer n)
+		public Notes_VesselLog(Notes_VesselLog copy, Notes_Container n)
 		{
 			targetLocation = copy.targetLocation;
 			root = n;

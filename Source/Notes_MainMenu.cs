@@ -7,16 +7,16 @@ using BetterNotes.Framework;
 namespace BetterNotes
 {
 	[KSPAddon(KSPAddon.Startup.MainMenu, true)]
-	public class NotesMainMenu : Notes_MBE
+	public class Notes_MainMenu : Notes_MBE
 	{
 		private bool loaded;
 
 		private const string settingsFilePath = "BetterNotes/Settings";
 		private const string settingsNode = "NotesSettings";
 
-		private static NotesSettings settings;
+		private static Notes_Settings settings;
 
-		public static NotesSettings Settings
+		public static Notes_Settings Settings
 		{
 			get { return settings; }
 		}
@@ -28,7 +28,7 @@ namespace BetterNotes
 
 			loaded = true;
 
-			settings = new NotesSettings(settingsFilePath, settingsNode);
+			settings = new Notes_Settings(settingsFilePath, settingsNode);
 		}
 	}
 }

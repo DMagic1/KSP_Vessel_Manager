@@ -6,7 +6,7 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesPartBase : NotesBase
+	public class Notes_PartBase : Notes_Base
 	{
 		protected List<Part> validParts = new List<Part>();
 

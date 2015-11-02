@@ -9,12 +9,12 @@ using BetterNotes.NoteClasses.CheckListHandler;
 namespace BetterNotes
 {
 	[KSPScenario(ScenarioCreationOptions.AddToAllGames)]
-	public class NotesScenario : ScenarioModule
+	public class Notes_Scenario : ScenarioModule
 	{
-		private static NotesScenario instance;
-		private NotesCore core;
+		private static Notes_Scenario instance;
+		private Notes_Core core;
 
-		public static NotesScenario Instance
+		public static Notes_Scenario Instance
 		{
 			get { return instance; }
 		}
@@ -57,7 +57,7 @@ namespace BetterNotes
 					continue;
 				}
 
-				NotesContainer n = new NotesContainer(v);
+				Notes_Container n = new Notes_Container(v);
 
 				ConfigNode vesselStats = vesselNotes.GetNode("VESSEL_STATS");
 
@@ -65,7 +65,7 @@ namespace BetterNotes
 				{
 
 
-					NotesVitalStats s = new NotesVitalStats();
+					Notes_VitalStats s = new Notes_VitalStats();
 
 					n.loadVitalStats(s);
 				}
@@ -74,7 +74,7 @@ namespace BetterNotes
 
 				if (contracts != null)
 				{
-					NotesContractContainer c = new NotesContractContainer();
+					Notes_ContractContainer c = new Notes_ContractContainer();
 
 					List<Guid> contractIDs = contracts.parse("CONTRACTS", new List<Guid>());
 
@@ -85,7 +85,7 @@ namespace BetterNotes
 
 				if (dataNotes != null)
 				{
-					NotesDataContainer d = new NotesDataContainer();
+					Notes_DataContainer d = new Notes_DataContainer();
 
 					for (int k = 0; k < dataNotes.GetNodes("COMPLETED_DATA").Length; k++)
 					{
@@ -102,7 +102,7 @@ namespace BetterNotes
 						float value = s.parse("SCIENCE_VALUE", 0f);
 						int time = s.parse("TIME_RECEIVED", (int)0);
 
-						NotesReceivedData o = new NotesReceivedData(sub, value, time);
+						Notes_ReceivedData o = new Notes_ReceivedData(sub, value, time);
 
 						d.addReturnedData(o);
 					}
@@ -114,7 +114,7 @@ namespace BetterNotes
 
 				if (textNotes != null)
 				{
-					NotesTextContainer t = new NotesTextContainer();
+					Notes_TextContainer t = new Notes_TextContainer();
 
 					for (int j = 0; j < textNotes.GetNodes("NOTE").Length; j++)
 					{
@@ -134,7 +134,7 @@ namespace BetterNotes
 						DateTime create = note.parse("CREATE_TIME", new DateTime());
 						DateTime edit = note.parse("EDIT_TIME", new DateTime());
 
-						TextNotes newNote = new TextNotes(text, title, id, create, edit);
+						Notes_TextItem newNote = new Notes_TextItem(text, title, id, create, edit);
 
 						t.addNote(newNote);
 					}
@@ -146,7 +146,7 @@ namespace BetterNotes
 
 				if (checkList != null)
 				{
-					NotesCheckListContainer c = new NotesCheckListContainer();
+					Notes_CheckListContainer c = new Notes_CheckListContainer();
 
 					for (int j = 0; j < checkList.GetNodes("CHECK_LIST_ITEM").Length; j++)
 					{
@@ -163,11 +163,11 @@ namespace BetterNotes
 						bool complete = checkListItem.parse("COMPLETE", false);
 						float? data = checkListItem.parse("DATA", (float?)null);
 						Guid id = checkListItem.parse("KEY", Guid.NewGuid());
-						NotesCheckListType type = checkListItem.parse("TYPE", NotesCheckListType.custom);
+						Notes_CheckListType type = checkListItem.parse("TYPE", Notes_CheckListType.custom);
 						Vessel targetV = checkListItem.parse("TARGET_VESSEL", (Vessel)null);
 						CelestialBody targetB = checkListItem.parse("TARGET_BODY", (CelestialBody)null);
 
-						NotesCheckListItem newCheckListItem = new NotesCheckListItem(text, order, complete, targetV, targetB, id, type, c, data);
+						Notes_CheckListItem newCheckListItem = new Notes_CheckListItem(text, order, complete, targetV, targetB, id, type, c, data);
 
 						c.addCheckList(newCheckListItem);
 					}
@@ -179,7 +179,7 @@ namespace BetterNotes
 
 				if (vesselLog != null)
 				{
-					NotesVesselLog l = new NotesVesselLog();
+					Notes_VesselLog l = new Notes_VesselLog();
 
 					Vector2d target = vesselLog.parse("TARGET", new Vector2d());
 
@@ -201,7 +201,7 @@ namespace BetterNotes
 
 			for (int i = 0; i < core.notesCount; i++)
 			{
-				NotesContainer n = core.getNotes(i);
+				Notes_Container n = core.getNotes(i);
 
 				if (n == null)
 					continue;
@@ -230,7 +230,7 @@ namespace BetterNotes
 
 					for (int j = 0; j < n.Data.NotesDataCompletedCount; j++)
 					{
-						NotesReceivedData d = n.Data.getReturnedNotesData(j);
+						Notes_ReceivedData d = n.Data.getReturnedNotesData(j);
 
 						if (d == null)
 							continue;
@@ -252,7 +252,7 @@ namespace BetterNotes
 
 					for (int j = 0; j < n.Notes.noteCount; j++)
 					{
-						TextNotes t = n.Notes.getNote(j);
+						Notes_TextItem t = n.Notes.getNote(j);
 
 						if (t == null)
 							continue;
@@ -277,7 +277,7 @@ namespace BetterNotes
 
 					for (int j = 0; j < n.CheckList.noteCount; j++)
 					{
-						NotesCheckListItem c = n.CheckList.getCheckList(j);
+						Notes_CheckListItem c = n.CheckList.getCheckList(j);
 
 						if (c == null)
 							continue;
@@ -292,26 +292,26 @@ namespace BetterNotes
 
 						switch(c.CheckType)
 						{
-							case NotesCheckListType.dockVessel:
-							case NotesCheckListType.dockAsteroid:
-							case NotesCheckListType.rendezvousVessel:
-							case NotesCheckListType.rendezvousAsteroid:
+							case Notes_CheckListType.dockVessel:
+							case Notes_CheckListType.dockAsteroid:
+							case Notes_CheckListType.rendezvousVessel:
+							case Notes_CheckListType.rendezvousAsteroid:
 								checkItem.AddValue("TARGET_VESSEL", c.TargetVessel.id);
 								break;
-							case NotesCheckListType.launch:
-							case NotesCheckListType.land:
-							case NotesCheckListType.blastOff:
-							case NotesCheckListType.orbit:
-							case NotesCheckListType.enterOrbit:
-							case NotesCheckListType.returnToOrbit:
-							case NotesCheckListType.returnHome:
+							case Notes_CheckListType.launch:
+							case Notes_CheckListType.land:
+							case Notes_CheckListType.blastOff:
+							case Notes_CheckListType.orbit:
+							case Notes_CheckListType.enterOrbit:
+							case Notes_CheckListType.returnToOrbit:
+							case Notes_CheckListType.returnHome:
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
 								break;
-							case NotesCheckListType.science:
+							case Notes_CheckListType.science:
 								if (c.Data != null)
 									checkItem.AddValue("DATA", c.Data);
 								break;
-							case NotesCheckListType.scienceFromPlanet:
+							case Notes_CheckListType.scienceFromPlanet:
 								if (c.Data != null)
 									checkItem.AddValue("DATA", c.Data);
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
@@ -344,7 +344,7 @@ namespace BetterNotes
 		public override void OnAwake()
 		{
 			instance = this;
-			core = NotesCore.Instance;
+			core = Notes_Core.Instance;
 		}
 	}
 }

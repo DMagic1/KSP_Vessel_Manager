@@ -7,20 +7,20 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses.CheckListHandler
 {
-	public static class NotesCheckListTypeHandler
+	public static class Notes_CheckListTypeHandler
 	{
-		private static Dictionary<Guid, NotesCheckListItem> launchNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> orbitNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> enterOrbitNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> returnToOrbitNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> landNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> returnHomeNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> rendezvousVesselNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> dockVesselNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> rendezvousAsteroidNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> dockAsteroidNotes = new Dictionary<Guid, NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> blastOffNotes = new Dictionary<Guid,NotesCheckListItem>();
-		private static Dictionary<Guid, NotesCheckListItem> scienceNotes = new Dictionary<Guid, NotesCheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> launchNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> orbitNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> enterOrbitNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> returnToOrbitNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> landNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> returnHomeNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> rendezvousVesselNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> dockVesselNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> rendezvousAsteroidNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> dockAsteroidNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> blastOffNotes = new Dictionary<Guid,Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> scienceNotes = new Dictionary<Guid, Notes_CheckListItem>();
 
 		public static void registerEvents()
 		{
@@ -44,56 +44,56 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			GameEvents.OnScienceRecieved.Remove(onScienceReceive);
 		}
 
-		public static void registerCheckList(NotesCheckListItem n)
+		public static void registerCheckList(Notes_CheckListItem n)
 		{
 			switch (n.CheckType)
 			{
-				case NotesCheckListType.launch:
+				case Notes_CheckListType.launch:
 					if (!launchNotes.ContainsKey(n.ID))
 						launchNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.orbit:
+				case Notes_CheckListType.orbit:
 					if (!orbitNotes.ContainsKey(n.ID))
 						orbitNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.enterOrbit:
+				case Notes_CheckListType.enterOrbit:
 					if (!enterOrbitNotes.ContainsKey(n.ID))
 						enterOrbitNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.returnToOrbit:
+				case Notes_CheckListType.returnToOrbit:
 					if (!returnToOrbitNotes.ContainsKey(n.ID))
 						returnToOrbitNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.land:
+				case Notes_CheckListType.land:
 					if (!landNotes.ContainsKey(n.ID))
 						landNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.returnHome:
+				case Notes_CheckListType.returnHome:
 					if (!returnHomeNotes.ContainsKey(n.ID))
 						returnHomeNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.rendezvousVessel:
+				case Notes_CheckListType.rendezvousVessel:
 					if (!rendezvousVesselNotes.ContainsKey(n.ID))
 						rendezvousVesselNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.dockVessel:
+				case Notes_CheckListType.dockVessel:
 					if (!dockVesselNotes.ContainsKey(n.ID))
 						dockVesselNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.rendezvousAsteroid:
+				case Notes_CheckListType.rendezvousAsteroid:
 					if (!rendezvousAsteroidNotes.ContainsKey(n.ID))
 						rendezvousAsteroidNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.dockAsteroid:
+				case Notes_CheckListType.dockAsteroid:
 					if (!dockAsteroidNotes.ContainsKey(n.ID))
 						dockAsteroidNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.blastOff:
+				case Notes_CheckListType.blastOff:
 					if (!blastOffNotes.ContainsKey(n.ID))
 						blastOffNotes.Add(n.ID, n);
 					break;
-				case NotesCheckListType.science:
-				case NotesCheckListType.scienceFromPlanet:
+				case Notes_CheckListType.science:
+				case Notes_CheckListType.scienceFromPlanet:
 					if (!scienceNotes.ContainsKey(n.ID))
 						scienceNotes.Add(n.ID, n);
 					break;
@@ -102,56 +102,56 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			}
 		}
 
-		public static void deRegisterCheckList(NotesCheckListItem n)
+		public static void deRegisterCheckList(Notes_CheckListItem n)
 		{
 			switch (n.CheckType)
 			{
-				case NotesCheckListType.launch:
+				case Notes_CheckListType.launch:
 					if (launchNotes.ContainsKey(n.ID))
 						launchNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.orbit:
+				case Notes_CheckListType.orbit:
 					if (orbitNotes.ContainsKey(n.ID))
 						orbitNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.enterOrbit:
+				case Notes_CheckListType.enterOrbit:
 					if (enterOrbitNotes.ContainsKey(n.ID))
 						enterOrbitNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.returnToOrbit:
+				case Notes_CheckListType.returnToOrbit:
 					if (returnToOrbitNotes.ContainsKey(n.ID))
 						returnToOrbitNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.land:
+				case Notes_CheckListType.land:
 					if (landNotes.ContainsKey(n.ID))
 						landNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.returnHome:
+				case Notes_CheckListType.returnHome:
 					if (returnHomeNotes.ContainsKey(n.ID))
 						returnHomeNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.rendezvousVessel:
+				case Notes_CheckListType.rendezvousVessel:
 					if (rendezvousVesselNotes.ContainsKey(n.ID))
 						rendezvousVesselNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.dockVessel:
+				case Notes_CheckListType.dockVessel:
 					if (dockVesselNotes.ContainsKey(n.ID))
 						dockVesselNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.rendezvousAsteroid:
+				case Notes_CheckListType.rendezvousAsteroid:
 					if (rendezvousAsteroidNotes.ContainsKey(n.ID))
 						rendezvousAsteroidNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.dockAsteroid:
+				case Notes_CheckListType.dockAsteroid:
 					if (dockAsteroidNotes.ContainsKey(n.ID))
 						dockAsteroidNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.blastOff:
+				case Notes_CheckListType.blastOff:
 					if (blastOffNotes.ContainsKey(n.ID))
 						blastOffNotes.Remove(n.ID);
 					break;
-				case NotesCheckListType.science:
-				case NotesCheckListType.scienceFromPlanet:
+				case Notes_CheckListType.science:
+				case Notes_CheckListType.scienceFromPlanet:
 					if (scienceNotes.ContainsKey(n.ID))
 						scienceNotes.Remove(n.ID);
 					break;
@@ -168,10 +168,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (c == null)
 				return;
 
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = orbitNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = orbitNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
 			for (int i = 0; i < notes.Count(); i++)
 			{
-				NotesCheckListItem n = notes.ElementAt(i).Value;
+				Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 				if (n == null)
 					continue;
@@ -191,14 +191,14 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (c == null)
 				return;
 
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes;
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes;
 
 			if (c == Planetarium.fetch.Home)
 			{
 				notes = returnHomeNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
 				for (int i = 0; i < notes.Count(); i++)
 				{
-					NotesCheckListItem n = notes.ElementAt(i).Value;
+					Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 					if (n == null)
 						continue;
@@ -210,7 +210,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			notes = landNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
 			for (int i = 0; i < notes.Count(); i++)
 			{
-				NotesCheckListItem n = notes.ElementAt(i).Value;
+				Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 				if (n == null)
 					continue;
@@ -229,10 +229,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (v == null)
 				return;
 
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = launchNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = launchNotes.Where(n => n.Value.Root.RootVessel.id == v.id);
 			for (int i = 0; i < notes.Count(); i++)
 			{
-				NotesCheckListItem n = notes.ElementAt(i).Value;
+				Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 				if (n == null)
 					continue;
@@ -249,8 +249,8 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (F.from.vessel == null || F.to.vessel == null)
 				return;
 
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> fromNotes;
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> toNotes;
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> fromNotes;
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> toNotes;
 
 			if (F.to.vessel.FindPartModulesImplementing<ModuleAsteroid>().Count > 0)
 			{
@@ -274,7 +274,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				for (int i = 0; i < fromNotes.Count(); i++)
 				{
-					NotesCheckListItem n = fromNotes.ElementAt(i).Value;
+					Notes_CheckListItem n = fromNotes.ElementAt(i).Value;
 
 					if (n == null)
 						continue;
@@ -291,7 +291,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				for (int i = 0; i < toNotes.Count(); i++)
 				{
-					NotesCheckListItem n = toNotes.ElementAt(i).Value;
+					Notes_CheckListItem n = toNotes.ElementAt(i).Value;
 
 					if (n == null)
 						continue;
@@ -307,8 +307,8 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 
 		private static void onVesselLoad(Vessel v)
 		{
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> activeNotes;
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> loadedNotes;
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> activeNotes;
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> loadedNotes;
 
 			Vessel active = FlightGlobals.ActiveVessel;
 
@@ -334,7 +334,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				for (int i = 0; i < activeNotes.Count(); i++)
 				{
-					NotesCheckListItem n = activeNotes.ElementAt(i).Value;
+					Notes_CheckListItem n = activeNotes.ElementAt(i).Value;
 
 					if (n == null)
 						continue;
@@ -351,7 +351,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				for (int i = 0; i < loadedNotes.Count(); i++)
 				{
-					NotesCheckListItem n = loadedNotes.ElementAt(i).Value;
+					Notes_CheckListItem n = loadedNotes.ElementAt(i).Value;
 
 					if (n == null)
 						continue;
@@ -374,10 +374,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				if (VS.to == Vessel.Situations.FLYING || VS.to == Vessel.Situations.SUB_ORBITAL)
 				{
-					IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = blastOffNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
+					IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = blastOffNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
 					for (int i = 0; i < notes.Count(); i++)
 					{
-						NotesCheckListItem n = notes.ElementAt(i).Value;
+						Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 						if (n == null)
 							continue;
@@ -385,7 +385,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 						if (n.TargetBody != VS.host.mainBody)
 							continue;
 
-						NotesCore.Instance.CheckListMono.startBlastOffWatcher(VS.host, n);
+						Notes_Core.Instance.CheckListMono.startBlastOffWatcher(VS.host, n);
 					}
 				}
 			}
@@ -394,10 +394,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				if (VS.to == Vessel.Situations.ORBITING)
 				{
-					IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = returnToOrbitNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
+					IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = returnToOrbitNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
 					for (int i = 0; i < notes.Count(); i++)
 					{
-						NotesCheckListItem n = notes.ElementAt(i).Value;
+						Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 						if (n == null)
 							continue;
@@ -414,10 +414,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			{
 				if (VS.to == Vessel.Situations.ORBITING)
 				{
-					IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = enterOrbitNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
+					IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = enterOrbitNotes.Where(n => n.Value.Root.RootVessel.id == VS.host.id);
 					for (int i = 0; i < notes.Count(); i++)
 					{
-						NotesCheckListItem n = notes.ElementAt(i).Value;
+						Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 						if (n == null)
 							continue;
@@ -442,10 +442,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			if (pv.vesselRef.mainBody == null)
 				return;
 
-			IEnumerable<KeyValuePair<Guid, NotesCheckListItem>> notes = scienceNotes.Where(n => n.Value.Root.RootVessel.id == pv.vesselID);
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = scienceNotes.Where(n => n.Value.Root.RootVessel.id == pv.vesselID);
 			for (int i = 0; i < notes.Count(); i++)
 			{
-				NotesCheckListItem n = notes.ElementAt(i).Value;
+				Notes_CheckListItem n = notes.ElementAt(i).Value;
 
 				if (n == null)
 					continue;
@@ -453,7 +453,7 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 				if (n.Data == null)
 					continue;
 
-				if (n.CheckType == NotesCheckListType.scienceFromPlanet)
+				if (n.CheckType == Notes_CheckListType.scienceFromPlanet)
 				{
 					if (n.TargetBody == null)
 						continue;
@@ -466,10 +466,10 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 
 				switch (n.CheckType)
 				{
-					case NotesCheckListType.science:
+					case Notes_CheckListType.science:
 						n.Text =  string.Format("Return {0:F0} more science data", n.Data);
 						break;
-					case NotesCheckListType.scienceFromPlanet:
+					case Notes_CheckListType.scienceFromPlanet:
 						n.Text = string.Format("Return {0:F0} more science data from {1}", n.Data, n.TargetBody.theName);
 						break;
 				}

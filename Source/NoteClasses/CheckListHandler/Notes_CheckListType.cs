@@ -2,7 +2,7 @@
 
 namespace BetterNotes.NoteClasses.CheckListHandler
 {
-	public enum NotesCheckListType
+	public enum Notes_CheckListType
 	{
 		custom = 1,
 		launch = 2,

@@ -4,28 +4,37 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using BetterNotes.NoteClasses;
+using BetterNotes.NoteClasses.CheckListHandler;
 
 namespace BetterNotes.NoteUIObjects
 {
-	public class NoteTextButton : NoteUIObjectBase
+	public class Notes_CheckListButton : Notes_UIObjectBase
 	{
-		private TextNotes noteObject;
+		private Notes_CheckListItem checkListItem;
+
+		protected override void OnLeftClick()
+		{
+			switch (checkListItem.CheckType)
+			{
+				case Notes_CheckListType.custom:
+					checkListItem.setComplete();
+					break;
+				default:
+					return;
+			}
+
+		}
 
 		protected override bool assignObject(object obj)
 		{
-			if (obj == null || obj.GetType() != typeof(TextNotes))
+			if (obj == null || obj.GetType() != typeof(Notes_CheckListItem))
 			{
 				return false;
 			}
 
-			noteObject = (TextNotes)obj;
+			checkListItem = (Notes_CheckListItem)obj;
 
 			return true;
-		}
-
-		protected override void OnLeftClick()
-		{
-			throw new NotImplementedException();
 		}
 
 		protected override void OnRightClick()

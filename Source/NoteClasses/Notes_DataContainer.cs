@@ -6,21 +6,21 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesDataContainer : NotesPartBase
+	public class Notes_DataContainer : Notes_PartBase
 	{
-		private Dictionary<uint, NotesDataPart> allData = new Dictionary<uint, NotesDataPart>();
-		private Dictionary<string, NotesReceivedData> returnedData = new Dictionary<string, NotesReceivedData>();
+		private Dictionary<uint, Notes_DataPart> allData = new Dictionary<uint, Notes_DataPart>();
+		private Dictionary<string, Notes_ReceivedData> returnedData = new Dictionary<string, Notes_ReceivedData>();
 
-		public NotesDataContainer()
+		public Notes_DataContainer()
 		{}
 
-		public NotesDataContainer(NotesContainer n)
+		public Notes_DataContainer(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesDataContainer(NotesDataContainer copy, NotesContainer n)
+		public Notes_DataContainer(Notes_DataContainer copy, Notes_Container n)
 		{
 			allData = copy.allData;
 			returnedData = copy.returnedData;
@@ -38,7 +38,7 @@ namespace BetterNotes.NoteClasses
 			get { return returnedData.Count; }
 		}
 
-		public NotesReceivedData getReturnedNotesData(int index, bool warn = false)
+		public Notes_ReceivedData getReturnedNotesData(int index, bool warn = false)
 		{
 			if (returnedData.Count > index)
 				return returnedData.ElementAt(index).Value;
@@ -48,7 +48,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public void addReturnedData(NotesReceivedData n)
+		public void addReturnedData(Notes_ReceivedData n)
 		{
 			if (!returnedData.ContainsKey(n.ID))
 				returnedData.Add(n.ID, n);
@@ -56,7 +56,7 @@ namespace BetterNotes.NoteClasses
 				returnedData[n.ID].updateData(n);
 		}
 
-		public NotesDataPart getNotesData(uint id)
+		public Notes_DataPart getNotesData(uint id)
 		{
 			if (allData.ContainsKey(id))
 				return allData[id];
@@ -95,10 +95,10 @@ namespace BetterNotes.NoteClasses
 				if (p == null)
 					continue;
 
-				NotesDataPart n = getNotesData(p.flightID);
+				Notes_DataPart n = getNotesData(p.flightID);
 
 				if (n == null)
-					n = new NotesDataPart(p);
+					n = new Notes_DataPart(p);
 
 				n.clearData();
 
@@ -131,13 +131,13 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesDataPart
+	public class Notes_DataPart
 	{
-		private List<NotesDataObject> partData = new List<NotesDataObject>();
+		private List<Notes_DataObject> partData = new List<Notes_DataObject>();
 		private Part part;
 		private uint id;
 
-		public NotesDataPart(Part p)
+		public Notes_DataPart(Part p)
 		{
 			part = p;
 			id = p.flightID;
@@ -145,7 +145,7 @@ namespace BetterNotes.NoteClasses
 
 		public void addPartData(ScienceData data)
 		{
-			NotesDataObject n = new NotesDataObject(data, this);
+			Notes_DataObject n = new Notes_DataObject(data, this);
 
 			if (!partData.Contains(n))
 				partData.Add(n);
@@ -161,7 +161,7 @@ namespace BetterNotes.NoteClasses
 			get { return partData.Count; }
 		}
 
-		public List<NotesDataObject> PartData
+		public List<Notes_DataObject> PartData
 		{
 			get { return partData; }
 		}
@@ -177,18 +177,18 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesDataObject
+	public class Notes_DataObject
 	{
 		private ScienceData data;
 		private ScienceSubject sub;
-		private NotesDataPart root;
+		private Notes_DataPart root;
 		private float returnValue;
 		private float transmitValue;
 		private float remainingValue;
 		private string title;
 		private string text;
 
-		public NotesDataObject(ScienceData d, NotesDataPart r)
+		public Notes_DataObject(ScienceData d, Notes_DataPart r)
 		{
 			data = d;
 			root = r;
@@ -233,7 +233,7 @@ namespace BetterNotes.NoteClasses
 			get { return remainingValue; }
 		}
 
-		public NotesDataPart Root
+		public Notes_DataPart Root
 		{
 			get { return root; }
 		}
@@ -254,7 +254,7 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesReceivedData
+	public class Notes_ReceivedData
 	{
 		private ScienceSubject sub;
 		private float scienceValue;
@@ -264,7 +264,7 @@ namespace BetterNotes.NoteClasses
 		private string title;
 		private string text;
 
-		public NotesReceivedData(ScienceSubject id, float value, int time)
+		public Notes_ReceivedData(ScienceSubject id, float value, int time)
 		{
 			sub = id;
 			scienceValue = value;
@@ -275,7 +275,7 @@ namespace BetterNotes.NoteClasses
 			title = sub.title;
 		}
 
-		public void updateData(NotesReceivedData d)
+		public void updateData(Notes_ReceivedData d)
 		{
 			scienceValue += d.scienceValue;
 			receivedTime = d.receivedTime;

@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace BetterNotes.NoteClasses.CheckListHandler
 {
-	public class NotesCheckListMonoBehaviour : Notes_MBE
+	public class Notes_CheckListMonoBehaviour : Notes_MBE
 	{
-		private static NotesCheckListMonoBehaviour instance;
+		private static Notes_CheckListMonoBehaviour instance;
 
-		public static NotesCheckListMonoBehaviour Instance
+		public static Notes_CheckListMonoBehaviour Instance
 		{
 			get { return instance; }
 		}
@@ -26,12 +26,12 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 
 		}
 
-		public void startBlastOffWatcher(Vessel v, NotesCheckListItem n)
+		public void startBlastOffWatcher(Vessel v, Notes_CheckListItem n)
 		{
 			StartCoroutine(blastOffWatcher(v, n));
 		}
 
-		private IEnumerator blastOffWatcher(Vessel v, NotesCheckListItem n)
+		private IEnumerator blastOffWatcher(Vessel v, Notes_CheckListItem n)
 		{
 			float timer = 0;
 			double targetAlt = 0;

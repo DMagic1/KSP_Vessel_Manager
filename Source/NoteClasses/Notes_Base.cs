@@ -6,10 +6,10 @@ using BetterNotes.Framework;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesBase
+	public class Notes_Base
 	{
 		protected Vessel vessel;
-		protected NotesContainer root;
+		protected Notes_Container root;
 
 		protected virtual void updateNotes()
 		{

@@ -7,55 +7,48 @@ using BetterNotes.NoteClasses;
 
 namespace BetterNotes.NoteUIObjects
 {
-	public class NoteExpButton : NoteUIObjectBase
+	public class Notes_DataButton : Notes_UIObjectBase
 	{
-		private NotesExperiment expObject;
+		private Notes_DataObject dataObject;
 		private bool highlight;
 
 		private void Start()
 		{
-			highlight = NotesMainMenu.Settings.HighLightPart;
+			highlight = Notes_MainMenu.Settings.HighLightPart;
 		}
 
 		protected override bool assignObject(object obj)
 		{
-			if (obj == null || obj.GetType() != typeof(NotesExperiment))
+			if (obj == null || obj.GetType() != typeof(Notes_DataObject))
 			{
 				return false;
 			}
 
-			expObject = (NotesExperiment)obj;
+			dataObject = (Notes_DataObject)obj;
 
 			return true;
 		}
 
 		protected override void OnLeftClick()
 		{
-			if (expObject.deployExperiment())
-			{
-				//log success
-			}
-			else
-			{
-				//log fail
-			}
+			//Review data
 		}
 
 		protected override void OnRightClick()
 		{
-			//Part Right-Click menu
+			throw new NotImplementedException();
 		}
 
 		protected override void OnMouseIn()
 		{
 			if (highlight)
-				expObject.RootPart.SetHighlight(true, false);
+				dataObject.RootPart.SetHighlight(true, false);
 		}
 
 		protected override void OnMouseOut()
 		{
 			if (highlight)
-				expObject.RootPart.SetHighlight(false, false);
+				dataObject.RootPart.SetHighlight(false, false);
 		}
 
 		protected override void ToolTip()

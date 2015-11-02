@@ -7,24 +7,24 @@ using BetterNotes.NoteClasses;
 
 namespace BetterNotes.NoteUIObjects
 {
-	public class NoteCrewButton : NoteUIObjectBase
+	public class Notes_CrewButton : Notes_UIObjectBase
 	{
-		private NotesCrewObject crewObject;
+		private Notes_CrewObject crewObject;
 		private bool highlight;
 
 		private void Start()
 		{
-			highlight = NotesMainMenu.Settings.HighLightPart;
+			highlight = Notes_MainMenu.Settings.HighLightPart;
 		}
 
 		protected override bool assignObject(object obj)
 		{
-			if (obj == null || obj.GetType() != typeof(NotesCrewObject))
+			if (obj == null || obj.GetType() != typeof(Notes_CrewObject))
 			{
 				return false;
 			}
 
-			crewObject = (NotesCrewObject)obj;
+			crewObject = (Notes_CrewObject)obj;
 
 			return true;
 		}

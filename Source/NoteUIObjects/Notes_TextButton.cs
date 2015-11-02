@@ -7,18 +7,18 @@ using BetterNotes.NoteClasses;
 
 namespace BetterNotes.NoteUIObjects
 {
-	public class NoteContractButton : NoteUIObjectBase
+	public class Notes_TextButton : Notes_UIObjectBase
 	{
-		private NotesContractInfo contract;
+		private Notes_TextItem noteObject;
 
 		protected override bool assignObject(object obj)
 		{
-			if (obj == null || obj.GetType() != typeof(NotesContractInfo))
+			if (obj == null || obj.GetType() != typeof(Notes_TextItem))
 			{
 				return false;
 			}
 
-			contract = (NotesContractInfo)obj;
+			noteObject = (Notes_TextItem)obj;
 
 			return true;
 		}

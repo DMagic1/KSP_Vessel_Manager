@@ -6,23 +6,23 @@ using UnityEngine;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesVitalStats : NotesBase
+	public class Notes_VitalStats : Notes_Base
 	{
 		private int contractsAssigned;
 		private int experimentsOnBoard;
 		private int dataOnBoard;
 		private double deltaV;
 
-		public NotesVitalStats()
+		public Notes_VitalStats()
 		{ }
 
-		public NotesVitalStats(NotesContainer n)
+		public Notes_VitalStats(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesVitalStats(NotesVitalStats copy, NotesContainer n)
+		public Notes_VitalStats(Notes_VitalStats copy, Notes_Container n)
 		{
 			deltaV = copy.deltaV;
 			root = n;

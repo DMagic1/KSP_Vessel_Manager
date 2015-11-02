@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BetterNotes
 {
 	[KSPAddon(KSPAddon.Startup.MainMenu, true)]
-	public class NotesResources : Notes_MBE
+	public class Notes_Resources : Notes_MBE
 	{
 		internal static Texture2D pilotIcon;
 		internal static Texture2D engineerIcon;

@@ -14,21 +14,21 @@ using FinePrint.Utilities;
 
 namespace BetterNotes.NoteClasses
 {
-	public class NotesContractContainer : NotesBase
+	public class Notes_ContractContainer : Notes_Base
 	{
-		private Dictionary<Guid, NotesContractInfo> allContracts = new Dictionary<Guid, NotesContractInfo>();
+		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
 		private List<Guid> contractIDs = new List<Guid>();
 
-		public NotesContractContainer()
+		public Notes_ContractContainer()
 		{ }
 
-		public NotesContractContainer(NotesContainer n)
+		public Notes_ContractContainer(Notes_Container n)
 		{
 			root = n;
 			vessel = n.NotesVessel;
 		}
 
-		public NotesContractContainer(NotesContractContainer copy, List<Guid> id, NotesContainer n)
+		public Notes_ContractContainer(Notes_ContractContainer copy, List<Guid> id, Notes_Container n)
 		{
 			allContracts = copy.allContracts;
 			contractIDs = id;
@@ -48,7 +48,7 @@ namespace BetterNotes.NoteClasses
 				if (allContracts.ContainsKey(g))
 					continue;
 
-				NotesContractInfo n = NotesCore.Instance.getContract(g);
+				Notes_ContractInfo n = Notes_Core.Instance.getContract(g);
 
 				if (n == null)
 					continue;
@@ -62,7 +62,7 @@ namespace BetterNotes.NoteClasses
 			get { return allContracts.Count; }
 		}
 
-		public NotesContractInfo getContract(int index, bool warn = false)
+		public Notes_ContractInfo getContract(int index, bool warn = false)
 		{
 			if (allContracts.Count > index)
 				return allContracts.ElementAt(index).Value;
@@ -72,7 +72,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public NotesContractInfo getContract(Guid id)
+		public Notes_ContractInfo getContract(Guid id)
 		{
 			if (allContracts.ContainsKey(id))
 				return allContracts[id];
@@ -86,7 +86,7 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesContractInfo
+	public class Notes_ContractInfo
 	{
 		private string title;
 		private float totalFundsReward, totalRepReward, totalSciReward;
@@ -98,10 +98,10 @@ namespace BetterNotes.NoteClasses
 		private Contract root;
 		private Guid id;
 		private Agent agent;
-		private List<NotesContractParameterInfo> parameters = new List<NotesContractParameterInfo>();
-		private List<NotesContractParameterInfo> allParameters = new List<NotesContractParameterInfo>();
+		private List<Notes_ContractParameterInfo> parameters = new List<Notes_ContractParameterInfo>();
+		private List<Notes_ContractParameterInfo> allParameters = new List<Notes_ContractParameterInfo>();
 
-		public NotesContractInfo(Contract c)
+		public Notes_ContractInfo(Contract c)
 		{
 			root = c;
 			try
@@ -158,7 +158,7 @@ namespace BetterNotes.NoteClasses
 
 		private void addContractParam(ContractParameter param)
 		{
-			NotesContractParameterInfo cc = new NotesContractParameterInfo(this, param, 0);
+			Notes_ContractParameterInfo cc = new Notes_ContractParameterInfo(this, param, 0);
 			parameters.Add(cc);
 			allParameters.Add(cc);
 		}
@@ -237,7 +237,7 @@ namespace BetterNotes.NoteClasses
 			float f = 0;
 			f += (float)root.FundsCompletion + fundsRewStrat;
 			f += (float)root.FundsAdvance + fundsAdvStrat;
-			foreach (NotesContractParameterInfo p in allParameters)
+			foreach (Notes_ContractParameterInfo p in allParameters)
 				f += (float)p.Param.FundsCompletion + p.FundsRewStrat;
 			return f;
 		}
@@ -246,7 +246,7 @@ namespace BetterNotes.NoteClasses
 		{
 			float f = 0;
 			f += (float)root.FundsFailure + fundsPenStrat;
-			foreach (NotesContractParameterInfo p in allParameters)
+			foreach (Notes_ContractParameterInfo p in allParameters)
 				f += (float)p.Param.FundsFailure + p.FundsPenStrat;
 			return f;
 		}
@@ -255,7 +255,7 @@ namespace BetterNotes.NoteClasses
 		{
 			float f = 0;
 			f += root.ReputationCompletion + repRewStrat;
-			foreach (NotesContractParameterInfo p in allParameters)
+			foreach (Notes_ContractParameterInfo p in allParameters)
 				f += p.Param.ReputationCompletion + p.RepRewStrat;
 			return f;
 		}
@@ -264,7 +264,7 @@ namespace BetterNotes.NoteClasses
 		{
 			float f = 0;
 			f += root.ScienceCompletion + sciRewStrat;
-			foreach (NotesContractParameterInfo p in allParameters)
+			foreach (Notes_ContractParameterInfo p in allParameters)
 				f += p.Param.ScienceCompletion + p.SciRewStrat;
 			return f;
 		}
@@ -273,7 +273,7 @@ namespace BetterNotes.NoteClasses
 		{
 			float f = 0;
 			f += root.ReputationFailure + repPenStrat;
-			foreach (NotesContractParameterInfo p in allParameters)
+			foreach (Notes_ContractParameterInfo p in allParameters)
 				f += p.Param.ReputationFailure + p.RepPenStrat;
 			return f;
 		}
@@ -382,7 +382,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public void addToParams(NotesContractParameterInfo p)
+		public void addToParams(Notes_ContractParameterInfo p)
 		{
 			if (!allParameters.Contains(p))
 				allParameters.Add(p);
@@ -390,7 +390,7 @@ namespace BetterNotes.NoteClasses
 				Notes_MBE.LogFormatted("BetterNotes Parameter Object: [{0}] Already Present In Contract Container", p.Title);
 		}
 
-		public NotesContractParameterInfo getParameter(int i)
+		public Notes_ContractParameterInfo getParameter(int i)
 		{
 			if (parameters.Count >= i)
 				return parameters[i];
@@ -441,17 +441,17 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
-	public class NotesContractParameterInfo
+	public class Notes_ContractParameterInfo
 	{
 		private string title;
-		private NotesContractInfo root;
+		private Notes_ContractInfo root;
 		private ContractParameter param;
 		private int level;
 		private string fundsRew, fundsPen, repRew, repPen, sciRew;
 		private float fundsRewStrat, fundsPenStrat, repRewStrat, repPenStrat, sciRewStrat;
-		private List<NotesContractParameterInfo> parameters = new List<NotesContractParameterInfo>();
+		private List<Notes_ContractParameterInfo> parameters = new List<Notes_ContractParameterInfo>();
 
-		public NotesContractParameterInfo(NotesContractInfo Root, ContractParameter c, int l)
+		public Notes_ContractParameterInfo(Notes_ContractInfo Root, ContractParameter c, int l)
 		{
 			root = Root;
 			param = c;
@@ -485,7 +485,7 @@ namespace BetterNotes.NoteClasses
 
 		private void addToParams(ContractParameter p, int Level)
 		{
-			NotesContractParameterInfo cc = new NotesContractParameterInfo(root, p, Level);
+			Notes_ContractParameterInfo cc = new Notes_ContractParameterInfo(root, p, Level);
 			parameters.Add(cc);
 			root.addToParams(cc);
 		}
@@ -544,7 +544,7 @@ namespace BetterNotes.NoteClasses
 			}
 		}
 
-		public NotesContractParameterInfo getParameter(int i)
+		public Notes_ContractParameterInfo getParameter(int i)
 		{
 			if (parameters.Count >= i)
 				return parameters[i];
