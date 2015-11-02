@@ -69,11 +69,32 @@ namespace BetterNotes.NoteClasses
 		private Notes_CheckListType checkType;
 		private Notes_CheckListContainer root;
 
+		private static bool loaded = false;
+
+		private static string checkListTypeTitleLaunch = "Launch from {0}";		
+		private static string checkListTypeTitleOrbit = "Orbit {0}";		
+		private static string checkListTypeTitleEnterOrbit = "Enter orbit around {0}";		
+		private static string checkListTypeTitleReturnToOrbit = "Return to orbit from {0}";		
+		private static string checkListTypeTitleLand = "Land on {0}";		
+		private static string checkListTypeTitleReturnHome = "Return to {0}";		
+		private static string checkListTypeTitleRendezvousVessel = "Rendezvous with {0}\n(Approach to within 2.4km)";		
+		private static string checkListTypeTitleDockVessel = "Dock with {0}";		
+		private static string checkListTypeTitleRendezvousAsteroid = "Rendezvous with {0}\n(Approach to within 2.4km)";
+		private static string checkListTypeTitleDockAsteroid = "Grab {0}";
+		private static string checkListTypeTitleBlastOff = "Take off from {0}";
+		private static string checkListTypeTitleScience = "Return {0:F0} science data";
+		private static string checkListTypeTitleScienceFromPlanet = "Return {0:F0} science data from {1}";
+
 		public Notes_CheckListItem()
-		{ }
+		{
+			if (!loaded)
+				loadStrings();
+		}
 
 		public Notes_CheckListItem(int i, Vessel targetV, CelestialBody targetB, Notes_CheckListType type, Notes_CheckListContainer r, string t = "", float? d = null)
 		{
+			if (!loaded)
+				loadStrings();
 			order = i;
 			checkType = type;
 			root = r;
@@ -116,6 +137,8 @@ namespace BetterNotes.NoteClasses
 
 		public Notes_CheckListItem(string t, int i, bool b, Vessel targetV, CelestialBody targetB, Guid g, Notes_CheckListType y, Notes_CheckListContainer r, float? d)
 		{
+			if (!loaded)
+				loadStrings();
 			text = t;
 			order = i;
 			complete = b;
@@ -129,6 +152,28 @@ namespace BetterNotes.NoteClasses
 			Notes_CheckListTypeHandler.registerCheckList(this);
 		}
 
+		private void loadStrings()
+		{
+			loaded = true;
+
+			if (Notes_MainMenu.Active_Localization_Pack == null)
+				return;
+
+			checkListTypeTitleLaunch = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleLaunch;
+			checkListTypeTitleOrbit = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleOrbit;
+			checkListTypeTitleEnterOrbit = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleEnterOrbit;
+			checkListTypeTitleReturnToOrbit = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleReturnToOrbit;
+			checkListTypeTitleLand = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleLand;
+			checkListTypeTitleReturnHome = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleReturnHome;
+			checkListTypeTitleRendezvousVessel = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleRendezvousVessel;
+			checkListTypeTitleDockVessel = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleDockVessel;
+			checkListTypeTitleRendezvousAsteroid = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleRendezvousAsteroid;
+			checkListTypeTitleDockAsteroid = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleDockAsteroid;
+			checkListTypeTitleBlastOff = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleBlastOff;
+			checkListTypeTitleScience = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleScience;
+			checkListTypeTitleScienceFromPlanet = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleScienceFromPlanet;
+		}
+
 		public void setComplete()
 		{
 			complete = true;
@@ -140,31 +185,31 @@ namespace BetterNotes.NoteClasses
 			switch (checkType)
 			{
 				case Notes_CheckListType.blastOff:
-					return string.Format("Take off from {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleBlastOff, targetBody.theName);
 				case Notes_CheckListType.launch:
-					return string.Format("Launch from {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleLaunch, targetBody.theName);
 				case Notes_CheckListType.land:
-					return string.Format("Land on {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleLand, targetBody.theName);
 				case Notes_CheckListType.orbit:
-					return string.Format("Orbit {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleOrbit, targetBody.theName);
 				case Notes_CheckListType.enterOrbit:
-					return string.Format("Enter orbit around {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleEnterOrbit, targetBody.theName);
 				case Notes_CheckListType.returnToOrbit:
-					return string.Format("Return to orbit from {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleReturnToOrbit, targetBody.theName);
 				case Notes_CheckListType.returnHome:
-					return string.Format("Return to {0}", targetBody.theName);
+					return string.Format(checkListTypeTitleReturnHome, targetBody.theName);
 				case Notes_CheckListType.dockVessel:
-					return string.Format("Dock with {0}", targetVessel.vesselName);
+					return string.Format(checkListTypeTitleDockVessel, targetVessel.vesselName);
 				case Notes_CheckListType.rendezvousVessel:
-					return string.Format("Rendezvous with {0}\n(Approach to within 2.4km)", targetVessel.vesselName);
+					return string.Format(checkListTypeTitleRendezvousVessel, targetVessel.vesselName);
 				case Notes_CheckListType.dockAsteroid:
-					return string.Format("Grab {0}", targetVessel.vesselName);
+					return string.Format(checkListTypeTitleDockAsteroid, targetVessel.vesselName);
 				case Notes_CheckListType.rendezvousAsteroid:
-					return string.Format("Rendezvous with {0}\n(Approach to within 2.4km)", targetVessel.vesselName);
+					return string.Format(checkListTypeTitleRendezvousAsteroid, targetVessel.vesselName);
 				case Notes_CheckListType.science:
-					return string.Format("Return {0:F0} science data", data);
+					return string.Format(checkListTypeTitleScience, data);
 				case Notes_CheckListType.scienceFromPlanet:
-					return string.Format("Return {0:F0} science data from {1}", data, targetBody.theName);
+					return string.Format(checkListTypeTitleScienceFromPlanet, data, targetBody.theName);
 				default:
 					return custom;
 			}
