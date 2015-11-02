@@ -17,6 +17,18 @@ namespace BetterNotes.NoteUIObjects
 			highlight = NotesMainMenu.Settings.HighLightPart;
 		}
 
+		protected override bool assignObject(object obj)
+		{
+			if (obj == null || obj.GetType() != typeof(NotesCrewObject))
+			{
+				return false;
+			}
+
+			crewObject = (NotesCrewObject)obj;
+
+			return true;
+		}
+
 		protected override void OnLeftClick()
 		{
 			throw new NotImplementedException();

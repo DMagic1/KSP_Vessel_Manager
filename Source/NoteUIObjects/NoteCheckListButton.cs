@@ -25,6 +25,18 @@ namespace BetterNotes.NoteUIObjects
 
 		}
 
+		protected override bool assignObject(object obj)
+		{
+			if (obj == null || obj.GetType() != typeof(NotesCheckListItem))
+			{
+				return false;
+			}
+
+			checkListItem = (NotesCheckListItem)obj;
+
+			return true;
+		}
+
 		protected override void OnRightClick()
 		{
 			throw new NotImplementedException();

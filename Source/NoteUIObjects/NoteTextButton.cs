@@ -9,7 +9,19 @@ namespace BetterNotes.NoteUIObjects
 {
 	public class NoteTextButton : NoteUIObjectBase
 	{
+		private TextNotes noteObject;
 
+		protected override bool assignObject(object obj)
+		{
+			if (obj == null || obj.GetType() != typeof(TextNotes))
+			{
+				return false;
+			}
+
+			noteObject = (TextNotes)obj;
+
+			return true;
+		}
 
 		protected override void OnLeftClick()
 		{

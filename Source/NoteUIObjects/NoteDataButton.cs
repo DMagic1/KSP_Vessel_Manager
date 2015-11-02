@@ -17,6 +17,18 @@ namespace BetterNotes.NoteUIObjects
 			highlight = NotesMainMenu.Settings.HighLightPart;
 		}
 
+		protected override bool assignObject(object obj)
+		{
+			if (obj == null || obj.GetType() != typeof(NotesDataObject))
+			{
+				return false;
+			}
+
+			dataObject = (NotesDataObject)obj;
+
+			return true;
+		}
+
 		protected override void OnLeftClick()
 		{
 			//Review data

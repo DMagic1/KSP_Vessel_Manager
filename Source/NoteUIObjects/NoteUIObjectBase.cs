@@ -15,5 +15,6 @@ namespace BetterNotes.NoteUIObjects
 		protected abstract void ToolTip();
 		protected abstract void OnMouseIn();
 		protected abstract void OnMouseOut();
+		protected abstract bool assignObject(object obj);
 	}
 }

@@ -11,6 +11,18 @@ namespace BetterNotes.NoteUIObjects
 	{
 		private NotesContractInfo contract;
 
+		protected override bool assignObject(object obj)
+		{
+			if (obj == null || obj.GetType() != typeof(NotesContractInfo))
+			{
+				return false;
+			}
+
+			contract = (NotesContractInfo)obj;
+
+			return true;
+		}
+
 		protected override void OnLeftClick()
 		{
 			throw new NotImplementedException();
