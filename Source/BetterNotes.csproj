@@ -32,16 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\KSP Dev\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\KSP Dev\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\KSP Dev Build\Kerbal Space Program\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\KSP Dev\Kerbal Space Program\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -66,6 +66,8 @@
     <Compile Include="NoteClasses\Notes_CrewContainer.cs" />
     <Compile Include="NoteClasses\Notes_DataContainer.cs" />
     <Compile Include="NoteClasses\Notes_ExpContainer.cs" />
+    <Compile Include="Notes_LanguagePack.cs" />
+    <Compile Include="Notes_Localization.cs" />
     <Compile Include="Notes_MainMenu.cs" />
     <Compile Include="Notes_Resources.cs" />
     <Compile Include="Notes_Scenario.cs" />
