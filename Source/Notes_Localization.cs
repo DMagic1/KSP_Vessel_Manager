@@ -22,6 +22,7 @@ namespace BetterNotes
 				activePack = new Notes_LanguagePack();
 				Language_Packs.Add(activePack);
 				Save();
+				LoadSavedCopy();
 			}
 		}
 
