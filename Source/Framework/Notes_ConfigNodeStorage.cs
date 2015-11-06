@@ -138,6 +138,30 @@ namespace BetterNotes.Framework
             return blnReturn;
         }
 
+		public bool LoadSavedCopy()
+		{
+			try
+			{
+				if (FileExists)
+				{
+					ConfigNode cnToLoad = ConfigNode.Load(FilePath);
+					ConfigNode cnUnwrapped = cnToLoad.GetNode(this.GetType().Name);
+					ConfigNode.LoadObjectFromConfig(this, cnUnwrapped);
+					return true;
+				}
+				else
+				{
+					LogFormatted("File could not be found to load after saving new copy ({0})", FilePath);
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				LogFormatted("Failed to Load ConfigNode from file after saving ({0}) - Error:{1}", FilePath, ex.Message);
+				return false;
+			}
+		}
+
         /// <summary>
         /// Saves the object to a ConfigNode structure in the previously supplied file
         /// </summary>
