@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Reflection;
 using BetterNotes.Framework;
 
 namespace BetterNotes
@@ -45,12 +46,46 @@ namespace BetterNotes
 
 		public override void OnDecodeFromConfigNode()
 		{
-			//Replace [] with {}; replace new lines...
+			Regex openBracket = new Regex(@"\[(?=\d+:?\w{0,3}\])");
+
+			Regex closeBraket = new Regex(@"(?<=\{\d+:?\w{0,3})\]");
+
+			Regex newLines = new Regex(@"\\n");
+
+			var stringFields = this.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).Where(a => a.FieldType == typeof(string)).ToList();
+
+			for (int i = 0; i < stringFields.Count(); i++)
+			{
+				FieldInfo f = stringFields[i];
+
+				f.SetValue(this, openBracket.Replace((string)f.GetValue(this), "{"));
+
+				f.SetValue(this, closeBraket.Replace((string)f.GetValue(this), "}"));
+
+				f.SetValue(this, newLines.Replace((string)f.GetValue(this), Environment.NewLine));
+			}
 		}
 
 		public override void OnEncodeToConfigNode()
 		{
-			
+			Regex openCurlyBracket = new Regex(@"\{(?=\d+:?\w{0,3}\})");
+
+			Regex closeCurlyBraket = new Regex(@"(?<=\[\d+:?\w{0,3})\}");
+
+			Regex newLines = new Regex(@"\n");
+
+			var stringFields = this.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).Where(a => a.FieldType == typeof(string)).ToList();
+
+			for (int i = 0; i < stringFields.Count(); i++)
+			{
+				FieldInfo f = stringFields[i];
+
+				f.SetValue(this, openCurlyBracket.Replace((string)f.GetValue(this), "["));
+
+				f.SetValue(this, closeCurlyBraket.Replace((string)f.GetValue(this), "]"));
+
+				f.SetValue(this, newLines.Replace((string)f.GetValue(this), @"\n"));
+			}
 		}
 
 		public bool ActivePack
