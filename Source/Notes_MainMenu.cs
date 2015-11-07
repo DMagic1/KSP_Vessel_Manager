@@ -17,8 +17,15 @@ namespace BetterNotes
 		private const string localizationFilePath = "BetterNotes/Localization";
 		private const string localizationNode = "Notes_Localization";
 
+		private static bool contractsPlusLoaded;
+
 		private static Notes_Settings settings;
 		private static Notes_Localization localization;
+
+		public static bool ContractsPlusLoaded
+		{
+			get { return contractsPlusLoaded; }
+		}
 
 		public static Notes_Settings Settings
 		{
@@ -45,6 +52,8 @@ namespace BetterNotes
 			settings = new Notes_Settings(settingsFilePath, settingsNode);
 
 			localization = new Notes_Localization(localizationFilePath, localizationNode);
+
+			contractsPlusLoaded = Notes_AssemblyLoad.loadMethods();
 		}
 	}
 }
