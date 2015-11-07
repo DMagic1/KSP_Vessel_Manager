@@ -31,7 +31,10 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnLeftClick()
 		{
-			//Review data
+			if (dataObject == null)
+				return;
+
+			dataObject.reviewData();
 		}
 
 		protected override void OnRightClick()
@@ -41,12 +44,18 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnMouseIn()
 		{
+			if (dataObject == null)
+				return;
+
 			if (highlight)
 				dataObject.RootPart.SetHighlight(true, false);
 		}
 
 		protected override void OnMouseOut()
 		{
+			if (dataObject == null)
+				return;
+
 			if (highlight)
 				dataObject.RootPart.SetHighlight(false, false);
 		}

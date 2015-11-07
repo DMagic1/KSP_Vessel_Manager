@@ -116,7 +116,7 @@ namespace BetterNotes.NoteClasses
 						if (d == null)
 							continue;
 
-						n.addPartData(d);
+						n.addPartData(d, container);
 					}
 				}
 
@@ -143,9 +143,9 @@ namespace BetterNotes.NoteClasses
 			id = p.flightID;
 		}
 
-		public void addPartData(ScienceData data)
+		public void addPartData(ScienceData Data, IScienceDataContainer Container)
 		{
-			Notes_DataObject n = new Notes_DataObject(data, this);
+			Notes_DataObject n = new Notes_DataObject(Data, this, Container);
 
 			if (!partData.Contains(n))
 				partData.Add(n);
@@ -182,16 +182,18 @@ namespace BetterNotes.NoteClasses
 		private ScienceData data;
 		private ScienceSubject sub;
 		private Notes_DataPart root;
+		private IScienceDataContainer container;
 		private float returnValue;
 		private float transmitValue;
 		private float remainingValue;
 		private string title;
 		private string text;
 
-		public Notes_DataObject(ScienceData d, Notes_DataPart r)
+		public Notes_DataObject(ScienceData d, Notes_DataPart r, IScienceDataContainer c)
 		{
 			data = d;
 			root = r;
+			container = c;
 			sub = ResearchAndDevelopment.GetSubjectByID(d.subjectID);
 			if (sub != null)
 			{
@@ -211,6 +213,17 @@ namespace BetterNotes.NoteClasses
 			returnValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, 1f) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 			transmitValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, data.transmitValue) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 			remainingValue = Math.Min(sub.scienceCap, Math.Max(0f, sub.scienceCap * sub.scientificValue)) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
+		}
+
+		public void reviewData()
+		{
+			if (data == null)
+				return;
+
+			if (container == null)
+				return;
+
+			container.ReviewData();
 		}
 
 		public ScienceData Data
