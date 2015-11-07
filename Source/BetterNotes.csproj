@@ -62,6 +62,7 @@
     <Compile Include="NoteClasses\Notes_ContractContainer.cs" />
     <Compile Include="NoteClasses\Notes_VesselLog.cs" />
     <Compile Include="NoteClasses\Notes_VitalStats.cs" />
+    <Compile Include="Notes_AssemblyLoad.cs" />
     <Compile Include="Notes_Core.cs" />
     <Compile Include="NoteClasses\Notes_CrewContainer.cs" />
     <Compile Include="NoteClasses\Notes_DataContainer.cs" />
