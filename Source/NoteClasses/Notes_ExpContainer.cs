@@ -191,6 +191,7 @@ namespace BetterNotes.NoteClasses
 			}
 			catch (Exception e)
 			{
+				Debug.Log("[BetterNotes] Error in invoking derived Deploy Experiment Module; Running base method " + e);
 				experimentModule.DeployExperiment();
 			}
 

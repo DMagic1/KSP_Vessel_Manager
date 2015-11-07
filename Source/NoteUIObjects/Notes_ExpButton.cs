@@ -31,6 +31,9 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnLeftClick()
 		{
+			if (expObject == null)
+				return;
+
 			if (expObject.deployExperiment())
 			{
 				//log success
@@ -48,12 +51,18 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnMouseIn()
 		{
+			if (expObject == null)
+				return;
+
 			if (highlight)
 				expObject.RootPart.SetHighlight(true, false);
 		}
 
 		protected override void OnMouseOut()
 		{
+			if (expObject == null)
+				return;
+
 			if (highlight)
 				expObject.RootPart.SetHighlight(false, false);
 		}
