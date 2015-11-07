@@ -134,6 +134,8 @@ namespace BetterNotes.NoteClasses
 		private Texture2D profIcon;
 		private Texture2D levelIcon;
 		private Color32 iconColor;
+		private CrewTransfer transfer;
+		private bool transferActive;
 
 		public Notes_CrewObject(ProtoCrewMember c, Notes_CrewPart r)
 		{
@@ -141,6 +143,16 @@ namespace BetterNotes.NoteClasses
 			root = r;
 			profIcon = assignPIcon(crew.experienceTrait);
 			levelIcon = assignLIcon(crew.experienceLevel);
+		}
+
+		public void transferCrew()
+		{
+			transfer = CrewTransfer.Create(RootPart, crew, onTransferDismiss);
+		}
+
+		public void onTransferDismiss(CrewTransfer.DismissAction d)
+		{
+			transfer = null;
 		}
 
 		private Texture2D assignPIcon(ExperienceTrait t)
@@ -189,6 +201,11 @@ namespace BetterNotes.NoteClasses
 		public ProtoCrewMember Crew
 		{
 			get { return crew; }
+		}
+
+		public bool TransferActive
+		{
+			get { return transferActive; }
 		}
 
 		public Notes_CrewPart Root

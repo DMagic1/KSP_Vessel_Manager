@@ -31,7 +31,12 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnLeftClick()
 		{
-			throw new NotImplementedException();
+			if (crewObject == null)
+				return;
+
+			crewObject.RootPart.SetHighlight(false, false);
+
+			crewObject.transferCrew();
 		}
 
 		protected override void OnRightClick()
@@ -41,12 +46,24 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnMouseIn()
 		{
+			if (crewObject == null)
+				return;
+
+			if (crewObject.TransferActive)
+				return;
+
 			if (highlight)
 				crewObject.RootPart.SetHighlight(true, false);
 		}
 
 		protected override void OnMouseOut()
 		{
+			if (crewObject == null)
+				return;
+
+			if (crewObject.TransferActive)
+				return;
+
 			if (highlight)
 				crewObject.RootPart.SetHighlight(false, false);
 		}
