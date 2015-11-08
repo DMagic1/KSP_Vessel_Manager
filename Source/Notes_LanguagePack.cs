@@ -10,11 +10,11 @@ namespace BetterNotes
 	public class Notes_LanguagePack : Notes_ConfigNodeStorage
 	{
 		[Persistent]
-		private bool activePack;
+		private bool activePack = true;
 		[Persistent]
 		private string language = "English(USA)";
 
-		//In all cases [x] in strings are replaced with {x} for string.Format; where x is a numeral
+		//In all cases [d] or [d:wd] in strings are replaced with {d} or {d:wd} for string.Format; where d is a numeral and w is a letter
 
 		//Check List Type Titles
 		[Persistent]
@@ -46,9 +46,9 @@ namespace BetterNotes
 
 		public override void OnDecodeFromConfigNode()
 		{
-			Regex openBracket = new Regex(@"\[(?=\d+:?\w{0,3}\])");
+			Regex openBracket = new Regex(@"\[(?=\d+:?\w?\d?\])");
 
-			Regex closeBraket = new Regex(@"(?<=\{\d+:?\w{0,3})\]");
+			Regex closeBraket = new Regex(@"(?<=\{\d+:?\w?\d?)\]");
 
 			Regex newLines = new Regex(@"\\n");
 
@@ -68,9 +68,9 @@ namespace BetterNotes
 
 		public override void OnEncodeToConfigNode()
 		{
-			Regex openCurlyBracket = new Regex(@"\{(?=\d+:?\w{0,3}\})");
+			Regex openCurlyBracket = new Regex(@"\{(?=\d+:?\w?\d?\})");
 
-			Regex closeCurlyBraket = new Regex(@"(?<=\[\d+:?\w{0,3})\}");
+			Regex closeCurlyBraket = new Regex(@"(?<=\[\d+:?\w?\d?)\}");
 
 			Regex newLines = new Regex(@"\n");
 
