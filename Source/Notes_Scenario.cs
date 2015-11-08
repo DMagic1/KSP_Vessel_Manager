@@ -167,6 +167,34 @@ namespace BetterNotes
 						Vessel targetV = checkListItem.parse("TARGET_VESSEL", (Vessel)null);
 						CelestialBody targetB = checkListItem.parse("TARGET_BODY", (CelestialBody)null);
 
+						if (!complete)
+						{
+							switch (type)
+							{
+								case Notes_CheckListType.dockVessel:
+								case Notes_CheckListType.dockAsteroid:
+								case Notes_CheckListType.rendezvousVessel:
+								case Notes_CheckListType.rendezvousAsteroid:
+									if (targetV == null)
+										continue;
+									break;
+								case Notes_CheckListType.enterOrbit:
+								case Notes_CheckListType.land:
+								case Notes_CheckListType.orbit:
+								case Notes_CheckListType.blastOff:
+								case Notes_CheckListType.returnToOrbit:
+								case Notes_CheckListType.scienceFromPlanet:
+									if (targetB == null)
+										continue;
+									break;
+								case Notes_CheckListType.launch:
+								case Notes_CheckListType.returnHome:
+									if (targetB == null)
+										targetB = Planetarium.fetch.Home;
+									break;
+							}
+						}
+
 						Notes_CheckListItem newCheckListItem = new Notes_CheckListItem(text, order, complete, targetV, targetB, id, type, c, data);
 
 						c.addCheckList(newCheckListItem);
@@ -296,6 +324,8 @@ namespace BetterNotes
 							case Notes_CheckListType.dockAsteroid:
 							case Notes_CheckListType.rendezvousVessel:
 							case Notes_CheckListType.rendezvousAsteroid:
+								if (c.TargetVessel == null)
+									continue;
 								checkItem.AddValue("TARGET_VESSEL", c.TargetVessel.id);
 								break;
 							case Notes_CheckListType.launch:
@@ -305,6 +335,8 @@ namespace BetterNotes
 							case Notes_CheckListType.enterOrbit:
 							case Notes_CheckListType.returnToOrbit:
 							case Notes_CheckListType.returnHome:
+								if (c.TargetBody == null)
+									continue;
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
 								break;
 							case Notes_CheckListType.science:
@@ -312,6 +344,8 @@ namespace BetterNotes
 									checkItem.AddValue("DATA", c.Data);
 								break;
 							case Notes_CheckListType.scienceFromPlanet:
+								if (c.TargetBody == null)
+									continue;
 								if (c.Data != null)
 									checkItem.AddValue("DATA", c.Data);
 								checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
