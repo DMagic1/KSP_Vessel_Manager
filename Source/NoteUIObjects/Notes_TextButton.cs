@@ -25,7 +25,7 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnLeftClick()
 		{
-			throw new NotImplementedException();
+			//Expand note text
 		}
 
 		protected override void OnRightClick()

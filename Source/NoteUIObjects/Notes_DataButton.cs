@@ -39,7 +39,7 @@ namespace BetterNotes.NoteUIObjects
 
 		protected override void OnRightClick()
 		{
-			throw new NotImplementedException();
+			//Part Right-Click menu
 		}
 
 		protected override void OnMouseIn()
