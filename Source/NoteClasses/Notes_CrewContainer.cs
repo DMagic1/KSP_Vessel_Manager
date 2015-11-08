@@ -148,11 +148,13 @@ namespace BetterNotes.NoteClasses
 		public void transferCrew()
 		{
 			transfer = CrewTransfer.Create(RootPart, crew, onTransferDismiss);
+			transferActive = true;
 		}
 
 		public void onTransferDismiss(CrewTransfer.DismissAction d)
 		{
 			transfer = null;
+			transferActive = false;
 		}
 
 		private Texture2D assignPIcon(ExperienceTrait t)
