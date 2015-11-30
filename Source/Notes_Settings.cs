@@ -17,6 +17,8 @@ namespace BetterNotes
 		[Persistent]
 		private bool showAsteroids = false;
 		[Persistent]
+		private bool allowScienceTransfer = true;
+		[Persistent]
 		private bool highlightPart = true;
 		[Persistent]
 		private Color32 pilotIconColor = XKCDColors.PastelRed;
@@ -54,6 +56,11 @@ namespace BetterNotes
 		public bool ShowAsteroids
 		{
 			get { return showAsteroids; }
+		}
+
+		public bool AllowScienceTransfer
+		{
+			get { return allowScienceTransfer; }
 		}
 
 		public bool HighLightPart
