@@ -11,10 +11,12 @@ namespace BetterNotes.NoteUIObjects
 	{
 		private Notes_DataObject dataObject;
 		private bool highlight;
+		private bool allowTransfer;
 
 		private void Start()
 		{
 			highlight = Notes_MainMenu.Settings.HighLightPart;
+			allowTransfer = Notes_MainMenu.Settings.AllowScienceTransfer;
 		}
 
 		protected override bool assignObject(object obj)
@@ -34,7 +36,16 @@ namespace BetterNotes.NoteUIObjects
 			if (dataObject == null)
 				return;
 
-			dataObject.reviewData();
+			if (dataObject.TransferActive)
+				return;
+
+			if (allowTransfer)
+			{
+				dataObject.RootPart.SetHighlight(false, false);
+				dataObject.transferData();
+			}
+			else
+				dataObject.reviewData();
 		}
 
 		protected override void OnRightClick()
@@ -47,6 +58,9 @@ namespace BetterNotes.NoteUIObjects
 			if (dataObject == null)
 				return;
 
+			if (dataObject.TransferActive)
+				return;
+
 			if (highlight)
 				dataObject.RootPart.SetHighlight(true, false);
 		}
@@ -54,6 +68,9 @@ namespace BetterNotes.NoteUIObjects
 		protected override void OnMouseOut()
 		{
 			if (dataObject == null)
+				return;
+
+			if (dataObject.TransferActive)
 				return;
 
 			if (highlight)

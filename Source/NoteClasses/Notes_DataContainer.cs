@@ -188,6 +188,8 @@ namespace BetterNotes.NoteClasses
 		private float remainingValue;
 		private string title;
 		private string text;
+		private bool transferActive;
+		private Notes_ScienceTransfer scienceTransfer;
 
 		public Notes_DataObject(ScienceData d, Notes_DataPart r, IScienceDataContainer c)
 		{
@@ -226,9 +228,26 @@ namespace BetterNotes.NoteClasses
 			container.ReviewData();
 		}
 
+		public void transferData()
+		{
+			scienceTransfer = Notes_ScienceTransfer.Create(RootPart, container, onTransferDismiss);
+			transferActive = true;
+		}
+
+		public void onTransferDismiss(CrewTransfer.DismissAction d)
+		{
+			scienceTransfer = null;
+			transferActive = false;
+		}
+
 		public ScienceData Data
 		{
 			get { return data; }
+		}
+
+		public bool TransferActive
+		{
+			get { return transferActive; }
 		}
 
 		public float ReturnValue
