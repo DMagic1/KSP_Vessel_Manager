@@ -72,6 +72,7 @@
     <Compile Include="Notes_MainMenu.cs" />
     <Compile Include="Notes_Resources.cs" />
     <Compile Include="Notes_Scenario.cs" />
+    <Compile Include="Notes_ScienceTransfer.cs" />
     <Compile Include="Notes_Settings.cs" />
     <Compile Include="NoteClasses\Notes_TextContainer.cs" />
     <Compile Include="NoteClasses\Notes_Type.cs" />
