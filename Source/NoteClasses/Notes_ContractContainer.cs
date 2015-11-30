@@ -16,7 +16,7 @@ namespace BetterNotes.NoteClasses
 {
 	public class Notes_ContractContainer : Notes_Base
 	{
-		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
+		private Dictionary<Guid, Notes_ContractShell> allContracts = new Dictionary<Guid, Notes_ContractShell>();
 		private List<Guid> contractIDs = new List<Guid>();
 
 		public Notes_ContractContainer()
@@ -53,8 +53,31 @@ namespace BetterNotes.NoteClasses
 				if (n == null)
 					continue;
 
-				allContracts.Add(g, n);
+				Notes_ContractShell shell = new Notes_ContractShell(n, this);
+
+				allContracts.Add(g, shell);
 			}
+		}
+
+		public void addContract(Guid id)
+		{
+			if (!contractIDs.Contains(id))
+				contractIDs.Add(id);
+
+			contractsRefresh();
+		}
+
+		public void removeContract(Guid id)
+		{
+			if (allContracts.ContainsKey(id))
+			{
+				allContracts[id] = null;
+				allContracts.Remove(id);
+			}
+			if (contractIDs.Contains(id))
+				contractIDs.RemoveAll(a => a == id);
+
+			contractsRefresh();
 		}
 
 		public int contractCount
@@ -62,7 +85,7 @@ namespace BetterNotes.NoteClasses
 			get { return allContracts.Count; }
 		}
 
-		public Notes_ContractInfo getContract(int index, bool warn = false)
+		public Notes_ContractShell getContract(int index, bool warn = false)
 		{
 			if (allContracts.Count > index)
 				return allContracts.ElementAt(index).Value;
@@ -72,7 +95,7 @@ namespace BetterNotes.NoteClasses
 			return null;
 		}
 
-		public Notes_ContractInfo getContract(Guid id)
+		public Notes_ContractShell getContract(Guid id)
 		{
 			if (allContracts.ContainsKey(id))
 				return allContracts[id];
@@ -83,6 +106,28 @@ namespace BetterNotes.NoteClasses
 		public IEnumerable<Guid> getAllContractIDs
 		{
 			get { return allContracts.Keys; }
+		}
+	}
+
+	public class Notes_ContractShell
+	{
+		private Notes_ContractInfo contract;
+		private Notes_ContractContainer root;
+
+		public Notes_ContractShell(Notes_ContractInfo c, Notes_ContractContainer r)
+		{
+			contract = c;
+			root = r;
+		}
+
+		public Notes_ContractInfo ContractInfo
+		{
+			get { return contract; }
+		}
+
+		public Notes_ContractContainer RootContainer
+		{
+			get { return root; }
 		}
 	}
 
@@ -620,6 +665,11 @@ namespace BetterNotes.NoteClasses
 		public float SciRewStrat
 		{
 			get { return sciRewStrat; }
+		}
+
+		public Notes_ContractInfo Root
+		{
+			get { return root; }
 		}
 	}
 }
