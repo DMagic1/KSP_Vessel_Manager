@@ -11,7 +11,6 @@ namespace BetterNotes
 	public class Notes_ScienceTransfer : Notes_MBE
 	{
 		private Part host;
-		private IScienceDataContainer source;
 		private List<IScienceDataContainer> containers;
 		private int dataCount;
 		private ScreenMessage instructionMessage;
@@ -20,11 +19,20 @@ namespace BetterNotes
 		private Callback<CrewTransfer.DismissAction> onDismiss;
 		private const string lockID = "Notes_ScienceTransfer_Lock";
 
+		private static string scienceTransferInstructions = "Select a science container to transfer {0} data to\n[Esc]: Cancel";
+		private static string scienceTransferFailFullContainer = "This container is full";
+		private static string scienceTransferFailSourceContainer = "The data is already in this container";
+		private static string scienceTransferSuccess = "Transfered Science Data to this container";
+		private static string scienceTransferInterrupted = "Science transfer was interrupted...";
+		private static bool stringsLoaded = false;
+
 		public static Notes_ScienceTransfer Create(Part p, IScienceDataContainer src, Callback<CrewTransfer.DismissAction> call)
 		{
+			if (!stringsLoaded)
+				loadStrings();
+
 			Notes_ScienceTransfer transfer = new GameObject("Notes_ScienceTransfer").AddComponent<Notes_ScienceTransfer>();
 			transfer.host = p;
-			transfer.source = src;
 			transfer.onDismiss = call;
 			transfer.dataCount = src.GetScienceCount();
 			transfer.containers = new List<IScienceDataContainer>(1) { src };
@@ -34,9 +42,25 @@ namespace BetterNotes
 
 		public void Dismiss(CrewTransfer.DismissAction action)
 		{
+			if (action == CrewTransfer.DismissAction.Interrupted)
+				ScreenMessages.PostScreenMessage(scienceTransferInterrupted, transferMessage, true);
 			onDismiss(action);
 			ScreenMessages.RemoveMessage(instructionMessage);
 			Destroy(this);
+		}
+
+		private static void loadStrings()
+		{
+			stringsLoaded = true;
+
+			if (Notes_MainMenu.Active_Localization_Pack == null)
+				return;
+
+			scienceTransferInstructions = Notes_MainMenu.Active_Localization_Pack.ScienceTransferInstructions;
+			scienceTransferFailFullContainer = Notes_MainMenu.Active_Localization_Pack.ScienceTransferFailFullContainer;
+			scienceTransferFailSourceContainer = Notes_MainMenu.Active_Localization_Pack.ScienceTransferFailSourceContainer;
+			scienceTransferSuccess = Notes_MainMenu.Active_Localization_Pack.ScienceTransferSuccess;
+			scienceTransferInterrupted = Notes_MainMenu.Active_Localization_Pack.ScienceTransferInterrupted;
 		}
 
 		private void transferSetup()
@@ -50,7 +74,7 @@ namespace BetterNotes
 			GameEvents.onVesselSituationChange.Add(onSituationChange);
 			GameEvents.OnExperimentDeployed.Add(onExperimentDeployed);
 
-			ScreenMessages.PostScreenMessage(string.Format("Select a science container to transfer {0} data to\n[Esc]: Cancel", dataCount), instructionMessage, false);
+			ScreenMessages.PostScreenMessage(string.Format(scienceTransferInstructions, dataCount), instructionMessage, false);
 
 			parts = new List<PartSelector>();
 
@@ -85,7 +109,7 @@ namespace BetterNotes
 		private void transferScience(ModuleScienceContainer container)
 		{
 			container.StoreData(containers, false);
-			ScreenMessages.PostScreenMessage("Transfered Science Data to this container", transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferSuccess, transferMessage, true);
 			Dismiss(CrewTransfer.DismissAction.CrewMoved);
 		}
 
@@ -95,7 +119,7 @@ namespace BetterNotes
 
 			if (m == null)
 			{
-				ScreenMessages.PostScreenMessage("This container is full", transferMessage, true);
+				ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage, true);
 				return;
 			}
 
@@ -104,12 +128,12 @@ namespace BetterNotes
 
 		private void onFullContainerSelect(Part p)
 		{
-			ScreenMessages.PostScreenMessage("This container is full", transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage, true);
 		}
 
 		private void onSourceContainerSelect(Part p)
 		{
-			ScreenMessages.PostScreenMessage("The data is already in this container", transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferFailSourceContainer, transferMessage, true);
 		}
 
 		private void onVesselModified(Vessel v)
