@@ -10,6 +10,7 @@ namespace BetterNotes.NoteClasses
 	{
 		private Dictionary<uint, Notes_DataPart> allData = new Dictionary<uint, Notes_DataPart>();
 		private Dictionary<string, Notes_ReceivedData> returnedData = new Dictionary<string, Notes_ReceivedData>();
+		public bool TransferActive { get; set; }
 
 		public Notes_DataContainer()
 		{}
@@ -98,7 +99,7 @@ namespace BetterNotes.NoteClasses
 				Notes_DataPart n = getNotesData(p.flightID);
 
 				if (n == null)
-					n = new Notes_DataPart(p);
+					n = new Notes_DataPart(p, this);
 
 				n.clearData();
 
@@ -136,11 +137,13 @@ namespace BetterNotes.NoteClasses
 		private List<Notes_DataObject> partData = new List<Notes_DataObject>();
 		private Part part;
 		private uint id;
+		private Notes_DataContainer root;
 
-		public Notes_DataPart(Part p)
+		public Notes_DataPart(Part p, Notes_DataContainer r)
 		{
 			part = p;
 			id = p.flightID;
+			root = r;
 		}
 
 		public void addPartData(ScienceData Data, IScienceDataContainer Container)
@@ -175,6 +178,11 @@ namespace BetterNotes.NoteClasses
 		{
 			get { return id; }
 		}
+
+		public Notes_DataContainer Root
+		{
+			get { return root; }
+		}
 	}
 
 	public class Notes_DataObject
@@ -188,7 +196,6 @@ namespace BetterNotes.NoteClasses
 		private float remainingValue;
 		private string title;
 		private string text;
-		private bool transferActive;
 		private Notes_ScienceTransfer scienceTransfer;
 
 		public Notes_DataObject(ScienceData d, Notes_DataPart r, IScienceDataContainer c)
@@ -199,8 +206,8 @@ namespace BetterNotes.NoteClasses
 			sub = ResearchAndDevelopment.GetSubjectByID(d.subjectID);
 			if (sub != null)
 			{
-				returnValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, 1f) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
-				transmitValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, data.transmitValue) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
+				returnValue = ResearchAndDevelopment.GetScienceValue(data.dataAmount, sub, 1f) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
+				transmitValue = ResearchAndDevelopment.GetScienceValue(data.dataAmount, sub, data.transmitValue) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 				remainingValue = Math.Min(sub.scienceCap, Math.Max(0f, sub.scienceCap * sub.scientificValue)) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 				text = ResearchAndDevelopment.GetResults(sub.id);
 			}
@@ -212,8 +219,8 @@ namespace BetterNotes.NoteClasses
 			if (sub == null)
 				return;
 
-			returnValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, 1f) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
-			transmitValue = ResearchAndDevelopment.GetNextScienceValue(data.dataAmount, sub, data.transmitValue) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
+			returnValue = ResearchAndDevelopment.GetScienceValue(data.dataAmount, sub, 1f) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
+			transmitValue = ResearchAndDevelopment.GetScienceValue(data.dataAmount, sub, data.transmitValue) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 			remainingValue = Math.Min(sub.scienceCap, Math.Max(0f, sub.scienceCap * sub.scientificValue)) * HighLogic.CurrentGame.Parameters.Career.ScienceGainMultiplier;
 		}
 
@@ -231,13 +238,13 @@ namespace BetterNotes.NoteClasses
 		public void transferData()
 		{
 			scienceTransfer = Notes_ScienceTransfer.Create(RootPart, container, onTransferDismiss);
-			transferActive = true;
+			RootContainer.TransferActive = true;
 		}
 
 		public void onTransferDismiss(CrewTransfer.DismissAction d)
 		{
 			scienceTransfer = null;
-			transferActive = false;
+			RootContainer.TransferActive = false;
 		}
 
 		public ScienceData Data
@@ -247,7 +254,7 @@ namespace BetterNotes.NoteClasses
 
 		public bool TransferActive
 		{
-			get { return transferActive; }
+			get { return RootContainer.TransferActive; }
 		}
 
 		public float ReturnValue
@@ -275,6 +282,11 @@ namespace BetterNotes.NoteClasses
 			get { return root.Part; }
 		}
 
+		public Notes_DataContainer RootContainer
+		{
+			get { return root.Root; }
+		}
+
 		public string Title
 		{
 			get { return title; }
@@ -295,8 +307,9 @@ namespace BetterNotes.NoteClasses
 		private string date;
 		private string title;
 		private string text;
+		private Notes_DataContainer rootContainer;
 
-		public Notes_ReceivedData(ScienceSubject id, float value, int time)
+		public Notes_ReceivedData(ScienceSubject id, float value, int time, Notes_DataContainer r)
 		{
 			sub = id;
 			scienceValue = value;
@@ -305,6 +318,7 @@ namespace BetterNotes.NoteClasses
 			remainingValue = Math.Min(sub.scienceCap, Math.Max(0f, sub.scienceCap * sub.scientificValue));
 			text = ResearchAndDevelopment.GetResults(sub.id);
 			title = sub.title;
+			rootContainer = r;
 		}
 
 		public void updateData(Notes_ReceivedData d)
@@ -348,6 +362,11 @@ namespace BetterNotes.NoteClasses
 		public string ID
 		{
 			get { return sub.id; }
+		}
+
+		public Notes_DataContainer RootContainer
+		{
+			get { return rootContainer; }
 		}
 	}
 }
