@@ -11,6 +11,7 @@ namespace BetterNotes.NoteClasses
 	public class Notes_CrewContainer : Notes_PartBase
 	{
 		private Dictionary<uint, Notes_CrewPart> allCrew = new Dictionary<uint, Notes_CrewPart>();
+		public bool TransferActive { get; set; }
 
 		public Notes_CrewContainer()
 		{ }
@@ -63,7 +64,7 @@ namespace BetterNotes.NoteClasses
 				Notes_CrewPart n = getCrewNotes(p.flightID);
 
 				if (n == null)
-					n = new Notes_CrewPart(p);
+					n = new Notes_CrewPart(p, this);
 
 				n.clearCrew();
 
@@ -92,10 +93,12 @@ namespace BetterNotes.NoteClasses
 	{
 		private List<Notes_CrewObject> partCrew = new List<Notes_CrewObject>();
 		private Part part;
+		private Notes_CrewContainer root;
 
-		public Notes_CrewPart(Part p)
+		public Notes_CrewPart(Part p, Notes_CrewContainer r)
 		{
 			part = p;
+			root = r;
 		}
 
 		public void clearCrew()
@@ -125,6 +128,11 @@ namespace BetterNotes.NoteClasses
 		{
 			get { return part; }
 		}
+
+		public Notes_CrewContainer Root
+		{
+			get { return root; }
+		}
 	}
 
 	public class Notes_CrewObject
@@ -135,7 +143,6 @@ namespace BetterNotes.NoteClasses
 		private Texture2D levelIcon;
 		private Color32 iconColor;
 		private CrewTransfer transfer;
-		private bool transferActive;
 
 		public Notes_CrewObject(ProtoCrewMember c, Notes_CrewPart r)
 		{
@@ -148,13 +155,13 @@ namespace BetterNotes.NoteClasses
 		public void transferCrew()
 		{
 			transfer = CrewTransfer.Create(RootPart, crew, onTransferDismiss);
-			transferActive = true;
+			RootContainer.TransferActive = true;
 		}
 
 		public void onTransferDismiss(CrewTransfer.DismissAction d)
 		{
 			transfer = null;
-			transferActive = false;
+			RootContainer.TransferActive = false;
 		}
 
 		private Texture2D assignPIcon(ExperienceTrait t)
@@ -207,7 +214,7 @@ namespace BetterNotes.NoteClasses
 
 		public bool TransferActive
 		{
-			get { return transferActive; }
+			get { return RootContainer.TransferActive; }
 		}
 
 		public Notes_CrewPart Root
@@ -218,6 +225,11 @@ namespace BetterNotes.NoteClasses
 		public Part RootPart
 		{
 			get { return root.Part; }
+		}
+
+		public Notes_CrewContainer RootContainer
+		{
+			get { return root.Root; }
 		}
 
 		public Texture2D ProfIcon
