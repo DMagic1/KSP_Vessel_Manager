@@ -34,6 +34,9 @@ namespace BetterNotes.NoteUIObjects
 			if (crewObject == null)
 				return;
 
+			if (crewObject.TransferActive)
+				return;
+
 			crewObject.RootPart.SetHighlight(false, false);
 
 			crewObject.transferCrew();
