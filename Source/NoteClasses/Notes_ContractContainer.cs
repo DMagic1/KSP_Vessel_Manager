@@ -330,8 +330,6 @@ namespace BetterNotes.NoteClasses
 				return ((BaseContract)root).targetBody;
 			else if (t == typeof(ISRUContract))
 				return ((ISRUContract)root).targetBody;
-			else if (t == typeof(RecordTrackContract))
-				return null;
 			else if (t == typeof(SatelliteContract))
 			{
 				SpecificOrbitParameter p = root.GetParameter<SpecificOrbitParameter>();
@@ -339,7 +337,7 @@ namespace BetterNotes.NoteClasses
 				if (p == null)
 					return null;
 
-				return p.targetBody;
+				return p.TargetBody;
 			}
 			else if (t == typeof(StationContract))
 				return ((StationContract)root).targetBody;
