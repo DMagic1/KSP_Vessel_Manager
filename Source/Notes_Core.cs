@@ -203,7 +203,7 @@ namespace BetterNotes
 
 			double time = Planetarium.GetUniversalTime();
 
-			Notes_ReceivedData o = new Notes_ReceivedData(sub, value, (int)time);
+			Notes_ReceivedData o = new Notes_ReceivedData(sub, value, (int)time, n.Data);
 
 			n.Data.addReturnedData(o);
 		}

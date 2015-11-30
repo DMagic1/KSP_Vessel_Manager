@@ -64,7 +64,7 @@ namespace BetterNotes.NoteClasses
 				Notes_ExpPart n = getExpNotes(p.flightID);
 
 				if (n == null)
-					n = new Notes_ExpPart(p);
+					n = new Notes_ExpPart(p, this);
 
 				n.clearExp();
 
@@ -103,10 +103,12 @@ namespace BetterNotes.NoteClasses
 	{
 		private List<Notes_Experiment> allExperiments = new List<Notes_Experiment>();
 		private Part part;
+		private Notes_ExpContainer root;
 
-		public Notes_ExpPart(Part p)
+		public Notes_ExpPart(Part p, Notes_ExpContainer r)
 		{
 			part = p;
+			root = r;
 		}
 
 		public void clearExp()
@@ -131,6 +133,11 @@ namespace BetterNotes.NoteClasses
 		public Part Part
 		{
 			get { return part; }
+		}
+
+		public Notes_ExpContainer Root
+		{
+			get { return root; }
 		}
 
 		public int ExpCount
@@ -206,6 +213,11 @@ namespace BetterNotes.NoteClasses
 		public Part RootPart
 		{
 			get { return root.Part; }
+		}
+
+		public Notes_ExpContainer RootContainer
+		{
+			get { return root.Root; }
 		}
 
 		public bool Inactive

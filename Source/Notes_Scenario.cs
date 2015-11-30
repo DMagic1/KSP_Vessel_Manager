@@ -102,7 +102,7 @@ namespace BetterNotes
 						float value = s.parse("SCIENCE_VALUE", 0f);
 						int time = s.parse("TIME_RECEIVED", (int)0);
 
-						Notes_ReceivedData o = new Notes_ReceivedData(sub, value, time);
+						Notes_ReceivedData o = new Notes_ReceivedData(sub, value, time, d);
 
 						d.addReturnedData(o);
 					}
@@ -134,7 +134,7 @@ namespace BetterNotes
 						DateTime create = note.parse("CREATE_TIME", new DateTime());
 						DateTime edit = note.parse("EDIT_TIME", new DateTime());
 
-						Notes_TextItem newNote = new Notes_TextItem(text, title, id, create, edit);
+						Notes_TextItem newNote = new Notes_TextItem(text, title, id, create, edit, t);
 
 						t.addNote(newNote);
 					}

@@ -64,21 +64,24 @@ namespace BetterNotes.NoteClasses
 		private Guid key;
 		private DateTime createTime;
 		private DateTime editTime;
+		private Notes_TextContainer rootContainer;
 
-		public Notes_TextItem(DateTime time)
+		public Notes_TextItem(DateTime time, Notes_TextContainer r)
 		{
 			createTime = time;
 			editTime = time;
 			key = Guid.NewGuid();
+			rootContainer = r;
 		}
 
-		public Notes_TextItem(string note, string t, Guid id, DateTime create, DateTime edit)
+		public Notes_TextItem(string note, string t, Guid id, DateTime create, DateTime edit, Notes_TextContainer r)
 		{
 			text = note;
 			title = t;
 			key = id;
 			createTime = create;
 			editTime = edit;
+			rootContainer = r;
 		}
 
 		public string Text
@@ -94,6 +97,11 @@ namespace BetterNotes.NoteClasses
 		public Guid ID
 		{
 			get { return key; }
+		}
+
+		public Notes_TextContainer RootContainer
+		{
+			get { return rootContainer; }
 		}
 
 		public DateTime CreateTime

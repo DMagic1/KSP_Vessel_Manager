@@ -85,10 +85,11 @@ namespace BetterNotes.NoteClasses
 		private static string checkListTypeTitleScience = "Return {0:F0} science data";
 		private static string checkListTypeTitleScienceFromPlanet = "Return {0:F0} science data from {1}";
 
-		public Notes_CheckListItem()
+		public Notes_CheckListItem(Notes_CheckListContainer r)
 		{
 			if (!loaded)
 				loadStrings();
+			root = r;
 		}
 
 		public Notes_CheckListItem(int i, Vessel targetV, CelestialBody targetB, Notes_CheckListType type, Notes_CheckListContainer r, string t = "", float? d = null)
