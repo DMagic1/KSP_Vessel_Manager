@@ -9,16 +9,16 @@ namespace BetterNotes.NoteUIObjects
 {
 	public class Notes_ContractButton : Notes_UIObjectBase
 	{
-		private Notes_ContractInfo contract;
+		private Notes_ContractShell contract;
 
 		protected override bool assignObject(object obj)
 		{
-			if (obj == null || obj.GetType() != typeof(Notes_ContractInfo))
+			if (obj == null || obj.GetType() != typeof(Notes_ContractShell))
 			{
 				return false;
 			}
 
-			contract = (Notes_ContractInfo)obj;
+			contract = (Notes_ContractShell)obj;
 
 			return true;
 		}
