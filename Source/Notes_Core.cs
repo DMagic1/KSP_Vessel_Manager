@@ -20,6 +20,7 @@ namespace BetterNotes
 		private Dictionary<Guid, Vessel> allVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, Notes_Container> allNotes = new Dictionary<Guid, Notes_Container>();
 		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
+		private Dictionary<string, List<Guid>> CWmissionLists = new Dictionary<string, List<Guid>>();
 
 		private Vessel activeVessel;
 
@@ -251,6 +252,66 @@ namespace BetterNotes
 
 				n.contractsRefresh();
 			}
+
+			if (Notes_MainMenu.ContractsPlusLoaded)
+			{
+				t = 0;
+				while (!Notes_AssemblyLoad.ContractMissionListsLoaded() && t < 550)
+				{
+					t++;
+					yield return null;
+				}
+
+				loadCWmissionLists();
+			}
 		}
+
+		private void loadCWmissionLists()
+		{
+			if (!Notes_MainMenu.ContractsPlusLoaded)
+				return;
+
+			CWmissionLists.Clear();
+
+			var strings = Notes_AssemblyLoad.GetContractMissionNames();
+
+			for (int i = 0; i < strings.Count(); i++)
+			{
+				string n = strings.ElementAt(i);
+
+				if (string.IsNullOrEmpty(n))
+					continue;
+
+				var ids = Notes_AssemblyLoad.GetContractMission(n);
+
+				if (ids == null)
+					continue;
+
+				addMissionList(n, ids.ToList());
+			}
+		}
+
+		private void addMissionList(string name, List<Guid> ids)
+		{
+			if (!CWmissionLists.ContainsKey(name))
+				CWmissionLists.Add(name, ids);
+			else
+				CWmissionLists[name] = ids;
+		}
+
+		private void removeMissionList(string name)
+		{
+			if (CWmissionLists.ContainsKey(name))
+				CWmissionLists.Remove(name);
+		}
+
+		public void refreshMissionLists()
+		{
+			if (!Notes_MainMenu.ContractsPlusLoaded)
+				return;
+
+			loadCWmissionLists();
+		}
+
 	}
 }
