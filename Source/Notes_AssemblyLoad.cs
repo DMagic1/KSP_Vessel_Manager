@@ -6,16 +6,18 @@ using UnityEngine;
 
 namespace BetterNotes
 {
-	class Notes_AssemblyLoad
+	public class Notes_AssemblyLoad
 	{
 		private static bool cPlusListNamesLoaded = false;
 		private static bool cPlusListCountLoaded = false;
 		private static bool cPlusListLoaded = false;
+		private static bool cPlusListStatusLoaded = false;
 
 		private const string cPlusTypeName = "ContractsWindow.contractUtils";
 		private const string cPlusMissionListName = "GetMissionNames";
 		private const string cPlusMissionCount = "GetListCount";
 		private const string cPlusMissionList = "GetMissionList";
+		private const string cPlusMissionListStatus = "GetMissionListLoadedStatus";
 
 		private static Type cPlusType;
 
@@ -27,13 +29,16 @@ namespace BetterNotes
 		private static CPlusListCount _MissionListCount;
 		private static CPlusMissionList _CPlusMissionList;
 
+		private static PropertyInfo _CPlusMissionListStatus;
+
 		public static bool loadMethods()
 		{
 			cPlusListNamesLoaded = loadCPlusMissionListNames();
 			cPlusListCountLoaded = loadCPlusMissionListCount();
 			cPlusListLoaded = loadCPlusMissionList();
+			cPlusListStatusLoaded = loadCPlusMissionListLoadedStatus();
 
-			return cPlusListNamesLoaded && cPlusListCountLoaded && cPlusListLoaded;
+			return cPlusListNamesLoaded && cPlusListCountLoaded && cPlusListLoaded && cPlusListStatusLoaded;
 		}
 
 		public static IEnumerable<string> GetContractMissionNames()
@@ -66,6 +71,11 @@ namespace BetterNotes
 			return _CPlusMissionList(name);
 		}
 
+		public static bool ContractMissionListsLoaded()
+		{
+			return (bool)_CPlusMissionListStatus.GetValue(null, null);
+		}
+
 		private static bool loadCPlusMissionListNames()
 		{
 			if (_MissionListNames != null)
@@ -85,7 +95,7 @@ namespace BetterNotes
 					}
 				}
 
-				MethodInfo CPlusMissionListNameMethod = cPlusType.GetMethod(cPlusMissionListName, BindingFlags.Instance | BindingFlags.Public, null, new Type[] {}, null);
+				MethodInfo CPlusMissionListNameMethod = cPlusType.GetMethod(cPlusMissionListName, BindingFlags.Static | BindingFlags.Public, null, new Type[] {}, null);
 
 				if (CPlusMissionListNameMethod == null)
 				{
@@ -125,7 +135,7 @@ namespace BetterNotes
 					}
 				}
 
-				MethodInfo CPlusMissionCountMethod = cPlusType.GetMethod(cPlusMissionCount, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(string) }, null);
+				MethodInfo CPlusMissionCountMethod = cPlusType.GetMethod(cPlusMissionCount, BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string) }, null);
 
 				if (CPlusMissionCountMethod == null)
 				{
@@ -165,7 +175,7 @@ namespace BetterNotes
 					}
 				}
 
-				MethodInfo CPlusMissionListMethod = cPlusType.GetMethod(cPlusMissionList, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(string) }, null);
+				MethodInfo CPlusMissionListMethod = cPlusType.GetMethod(cPlusMissionList, BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string) }, null);
 
 				if (CPlusMissionListMethod == null)
 				{
@@ -182,6 +192,36 @@ namespace BetterNotes
 			catch (Exception e)
 			{
 				Debug.Log("[BetterNotes] Error While Loading Contracts Window Plus Contract Reflection Methods: " + e);
+				return false;
+			}
+		}
+
+		private static bool loadCPlusMissionListLoadedStatus()
+		{
+			if (_CPlusMissionListStatus != null)
+				return true;
+
+			try
+			{
+				if (cPlusType == null)
+				{
+					cPlusType = AssemblyLoader.loadedAssemblies.SelectMany(a => a.assembly.GetExportedTypes())
+						.SingleOrDefault(t => t.FullName == cPlusTypeName);
+
+					if (cPlusType == null)
+					{
+						Debug.Log("[BetterNotes] Contracts Window + Type Not Found");
+						return false;
+					}
+				}
+
+				_CPlusMissionListStatus = cPlusType.GetProperty(cPlusMissionListStatus, BindingFlags.Static | BindingFlags.Public, null, typeof(bool), new Type[] { }, null);
+
+				return _CPlusMissionListStatus != null;
+			}
+			catch (Exception e)
+			{
+				Debug.Log("[BetterNotes] Error While Loading Contracts Window Plus Mission List Status Reflection Methods: " + e);
 				return false;
 			}
 		}
