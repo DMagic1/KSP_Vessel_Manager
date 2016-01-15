@@ -135,6 +135,55 @@ namespace BetterNotes.NoteClasses
 		}
 	}
 
+	public class Notes_Archived_Crew_Container: Notes_Base
+	{
+		private Dictionary<string, Notes_CrewObject> allCrew = new Dictionary<string, Notes_CrewObject>();
+
+		public Notes_Archived_Crew_Container() { }
+		
+		public Notes_Archived_Crew_Container(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+		}
+
+		public Notes_Archived_Crew_Container(Notes_Archived_Crew_Container copy, Notes_Archive_Container n)
+		{
+			allCrew = copy.allCrew;
+			archive_Root = n;
+			vessel = null;
+		}
+
+		public int getCrewCount
+		{
+			get { return allCrew.Count; }
+		}
+
+		public Notes_CrewObject getCrewNotes(string id)
+		{
+			if (allCrew.ContainsKey(id))
+				return allCrew[id];
+
+			return null;
+		}
+
+		public Notes_CrewObject getCrewNotes(int index)
+		{
+			if (allCrew.Count > index)
+				return allCrew.ElementAt(index).Value;
+
+			return null;
+		}
+
+		public void addCrewObject(ProtoCrewMember c)
+		{
+			Notes_CrewObject o = new Notes_CrewObject(c, this);
+
+			if (!allCrew.ContainsKey(c.name))
+				allCrew.Add(c.name, o);
+		}
+	}
+
 	public class Notes_CrewObject
 	{
 		private ProtoCrewMember crew;
@@ -143,6 +192,7 @@ namespace BetterNotes.NoteClasses
 		private Texture2D levelIcon;
 		private Color32 iconColor;
 		private CrewTransfer transfer;
+		private Notes_Archived_Crew_Container archive_Root;
 
 		public Notes_CrewObject(ProtoCrewMember c, Notes_CrewPart r)
 		{
@@ -152,8 +202,20 @@ namespace BetterNotes.NoteClasses
 			levelIcon = assignLIcon(crew.experienceLevel);
 		}
 
+		public Notes_CrewObject(ProtoCrewMember c, Notes_Archived_Crew_Container r)
+		{
+			crew = c;
+			root = null;
+			archive_Root = r;
+			profIcon = assignPIcon(crew.experienceTrait);
+			levelIcon = assignLIcon(crew.experienceLevel);
+		}
+
 		public void transferCrew()
 		{
+			if (root == null)
+				return;
+
 			transfer = CrewTransfer.Create(RootPart, crew, onTransferDismiss);
 			RootContainer.TransferActive = true;
 		}
@@ -224,12 +286,29 @@ namespace BetterNotes.NoteClasses
 
 		public Part RootPart
 		{
-			get { return root.Part; }
+			get
+			{
+				if (root == null)
+					return null;
+
+				return root.Part;
+			}
 		}
 
 		public Notes_CrewContainer RootContainer
 		{
-			get { return root.Root; }
+			get
+			{
+				if (root == null)
+					return null;
+
+				return root.Root;
+			}
+		}
+
+		public Notes_Archived_Crew_Container ArchiveRoot
+		{
+			get { return archive_Root; }
 		}
 
 		public Texture2D ProfIcon
