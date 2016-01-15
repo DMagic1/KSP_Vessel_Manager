@@ -286,6 +286,24 @@ namespace BetterNotes.Framework
 			return v;
 		}
 
+		public static VesselType parse(this ConfigNode node, string name, VesselType original)
+		{
+			if (!node.HasValue(name))
+				return original;
+
+			VesselType t = original;
+
+			int i = (int)original;
+
+			if (!int.TryParse(node.GetValue(name), out i))
+				return original;
+
+			if (i > 10 || i < 0)
+				return original;
+
+			return (VesselType)i;
+		}
+
 		public static Vessel.Situations parse(this ConfigNode node, string name, Vessel.Situations original)
 		{
 			if (!node.HasValue(name))
