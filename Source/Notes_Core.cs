@@ -18,6 +18,7 @@ namespace BetterNotes
 		private Notes_CheckListMonoBehaviour checkListMono;
 		private Dictionary<Guid, Vessel> activeVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, Vessel> allVessels = new Dictionary<Guid, Vessel>();
+		private Dictionary<Guid, Notes_Archive_Container> archivedNotes = new Dictionary<Guid, Notes_Archive_Container>();
 		private Dictionary<Guid, Notes_Container> allNotes = new Dictionary<Guid, Notes_Container>();
 		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
 		private Dictionary<string, List<Guid>> CWmissionLists = new Dictionary<string, List<Guid>>();
@@ -37,9 +38,7 @@ namespace BetterNotes
 		public void addNotes(Notes_Container n)
 		{
 			if (allNotes.ContainsKey(n.ID))
-			{
 				Debug.LogWarning("BetterNotes: Note already present with key: " + n.ID);
-			}
 			else
 				allNotes.Add(n.ID, n);
 		}
@@ -63,6 +62,37 @@ namespace BetterNotes
 				return allNotes.ElementAt(index).Value;
 			else if (warn)
 				Debug.LogWarning("Notes dictionary index out of range; something went wrong here...");
+
+			return null;
+		}
+
+		public void addArchivedNotes(Notes_Archive_Container n)
+		{
+			if (archivedNotes.ContainsKey(n.ID))
+				Debug.LogWarning("BetterNotes: Note already present with key: " + n.ID);
+			else
+				archivedNotes.Add(n.ID, n);
+		}
+
+		public Notes_Archive_Container getArchivedNotes(Guid id)
+		{
+			if (archivedNotes.ContainsKey(id))
+				return archivedNotes[id];
+
+			return null;
+		}
+
+		public int archivedNotesCount
+		{
+			get { return archivedNotes.Count; }
+		}
+
+		public Notes_Archive_Container getArchivedNotes(int index, bool warn = false)
+		{
+			if (archivedNotes.Count > index)
+				return archivedNotes.ElementAt(index).Value;
+			else if (warn)
+				Debug.LogWarning("Archived Notes dictionary index out of range; something went wrong here...");
 
 			return null;
 		}
@@ -106,6 +136,7 @@ namespace BetterNotes
 			GameEvents.onVesselWasModified.Add(vesselRefresh);
 			GameEvents.onVesselChange.Add(vesselRefresh);
 			GameEvents.OnScienceRecieved.Add(onScienceTransmit);
+			GameEvents.onVesselRecovered.Add(onVesselRecovered);
 			GameEvents.Contract.onAccepted.Add(onAddContract);
 			GameEvents.Contract.onFinished.Add(onFinishContract);
 			GameEvents.Contract.onContractsLoaded.Add(onLoadContracts);
@@ -135,6 +166,7 @@ namespace BetterNotes
 			GameEvents.onVesselWasModified.Remove(vesselRefresh);
 			GameEvents.onVesselChange.Remove(vesselRefresh);
 			GameEvents.OnScienceRecieved.Remove(onScienceTransmit);
+			GameEvents.onVesselRecovered.Add(onVesselRecovered);
 			GameEvents.Contract.onAccepted.Remove(onAddContract);
 			GameEvents.Contract.onFinished.Remove(onFinishContract);
 			GameEvents.Contract.onContractsLoaded.Remove(onLoadContracts);
@@ -207,6 +239,24 @@ namespace BetterNotes
 			Notes_ReceivedData o = new Notes_ReceivedData(sub, value, (int)time, n.Data);
 
 			n.Data.addReturnedData(o);
+		}
+
+		private void onVesselRecovered(ProtoVessel v)
+		{
+			Notes_Container container = getNotes(v.vesselID);
+
+			if (container == null)
+				return;
+
+			Notes_Archive_Container n = new Notes_Archive_Container(v.vesselID, v.vesselName, Planetarium.GetUniversalTime(), v.missionTime, v.vesselType);
+
+			n.loadCheckList(container.CheckList);
+			n.loadContracts(container.Contracts, container.Contracts.getAllContractIDs.ToList());
+			n.loadDataNotes(container.Data);
+			n.loadTextNotes(container.Notes);
+			n.loadVesselLog(container.Log);
+
+			addArchivedNotes(n);
 		}
 
 		private void onLoadContracts()
