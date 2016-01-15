@@ -39,6 +39,7 @@ namespace BetterNotes.NoteClasses
 	{
 		ActiveVessels = 1,
 		AllVessels = 2,
+		ArchivedVessels = 3,
 	}
 
 	public enum ContractsSubType
