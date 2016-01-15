@@ -9,6 +9,7 @@ namespace BetterNotes.NoteClasses
 	public class Notes_TextContainer : Notes_Base
 	{
 		private Dictionary<Guid, Notes_TextItem> notes = new Dictionary<Guid, Notes_TextItem>();
+		private bool archived;
 
 		public Notes_TextContainer()
 		{ }
@@ -19,11 +20,26 @@ namespace BetterNotes.NoteClasses
 			vessel = n.NotesVessel;
 		}
 
+		public Notes_TextContainer(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+			archived = true;
+		}
+
 		public Notes_TextContainer(Notes_TextContainer copy, Notes_Container n)
 		{
 			notes = copy.notes;
 			root = n;
 			vessel = n.NotesVessel;
+		}
+
+		public Notes_TextContainer(Notes_TextContainer copy, Notes_Archive_Container n)
+		{
+			notes = copy.notes;
+			archive_Root = n;
+			vessel = null;
+			archived = true;
 		}
 
 		public int noteCount
@@ -55,6 +71,10 @@ namespace BetterNotes.NoteClasses
 				notes.Add(note.ID, note);
 		}
 
+		public bool Archived
+		{
+			get { return archived; }
+		}
 	}
 
 	public class Notes_TextItem

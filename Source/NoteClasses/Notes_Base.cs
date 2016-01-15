@@ -10,6 +10,7 @@ namespace BetterNotes.NoteClasses
 	{
 		protected Vessel vessel;
 		protected Notes_Container root;
+		protected Notes_Archive_Container archive_Root;
 
 		protected virtual void updateNotes()
 		{

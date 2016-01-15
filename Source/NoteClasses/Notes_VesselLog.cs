@@ -10,6 +10,7 @@ namespace BetterNotes.NoteClasses
 	{
 		private Vector2d targetLocation;
 		private FlightLog shipsLog;
+		private bool archived;
 
 		public Notes_VesselLog()
 		{ }
@@ -20,11 +21,26 @@ namespace BetterNotes.NoteClasses
 			vessel = n.NotesVessel;
 		}
 
+		public Notes_VesselLog(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+			archived = true;
+		}
+
 		public Notes_VesselLog(Notes_VesselLog copy, Notes_Container n)
 		{
 			targetLocation = copy.targetLocation;
 			root = n;
 			vessel = n.NotesVessel;
+		}
+
+		public Notes_VesselLog(Notes_VesselLog copy, Notes_Archive_Container n)
+		{
+			targetLocation = copy.targetLocation;
+			archive_Root = n;
+			vessel = null;
+			archived = true;
 		}
 
 		private void loadVesselLog()
@@ -52,6 +68,11 @@ namespace BetterNotes.NoteClasses
 		public Vector2d TargetLocation
 		{
 			get { return targetLocation; }
+		}
+
+		public bool Archived
+		{
+			get { return archived; }
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace BetterNotes.NoteClasses
 	public class Notes_CheckListContainer : Notes_Base
 	{
 		private Dictionary<Guid, Notes_CheckListItem> allChecks = new Dictionary<Guid, Notes_CheckListItem>();
+		private bool archived;
 
 		public Notes_CheckListContainer()
 		{ }
@@ -20,11 +21,26 @@ namespace BetterNotes.NoteClasses
 			vessel = n.NotesVessel;
 		}
 
+		public Notes_CheckListContainer(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+			archived = true;
+		}
+
 		public Notes_CheckListContainer(Notes_CheckListContainer copy, Notes_Container n)
 		{
 			allChecks = copy.allChecks;
 			root = n;
 			vessel = n.NotesVessel;
+		}
+
+		public Notes_CheckListContainer(Notes_CheckListContainer copy, Notes_Archive_Container n)
+		{
+			allChecks = copy.allChecks;
+			archive_Root = n;
+			vessel = null;
+			archived = true;
 		}
 
 		public int noteCount
@@ -54,6 +70,11 @@ namespace BetterNotes.NoteClasses
 		{
 			if (!allChecks.ContainsKey(item.ID))
 				allChecks.Add(item.ID, item);
+		}
+
+		public bool Archived
+		{
+			get { return archived; }
 		}
 	}
 
@@ -144,11 +165,15 @@ namespace BetterNotes.NoteClasses
 			order = i;
 			complete = b;
 			id = g;
-			targetBody = targetB;
-			targetVessel = targetV;
 			checkType = y;
 			root = r;
 			data = d;
+
+			if (root.Archived)
+				return;
+
+			targetBody = targetB;
+			targetVessel = targetV;
 
 			Notes_CheckListTypeHandler.registerCheckList(this);
 		}

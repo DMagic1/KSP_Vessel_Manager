@@ -18,6 +18,7 @@ namespace BetterNotes.NoteClasses
 	{
 		private Dictionary<Guid, Notes_ContractShell> allContracts = new Dictionary<Guid, Notes_ContractShell>();
 		private List<Guid> contractIDs = new List<Guid>();
+		private bool archived;
 
 		public Notes_ContractContainer()
 		{ }
@@ -28,12 +29,28 @@ namespace BetterNotes.NoteClasses
 			vessel = n.NotesVessel;
 		}
 
+		public Notes_ContractContainer(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+			archived = true;
+		}
+
 		public Notes_ContractContainer(Notes_ContractContainer copy, List<Guid> id, Notes_Container n)
 		{
 			allContracts = copy.allContracts;
 			contractIDs = id;
 			root = n;
 			vessel = n.NotesVessel;
+		}
+
+		public Notes_ContractContainer(Notes_ContractContainer copy, List<Guid> id, Notes_Archive_Container n)
+		{
+			allContracts = copy.allContracts;
+			contractIDs = id;
+			archive_Root = n;
+			vessel = null;
+			archived = true;
 		}
 
 		public void contractsRefresh()
@@ -61,6 +78,9 @@ namespace BetterNotes.NoteClasses
 
 		public void addContract(Guid id)
 		{
+			if (archived)
+				return;
+
 			if (!contractIDs.Contains(id))
 				contractIDs.Add(id);
 
@@ -106,6 +126,11 @@ namespace BetterNotes.NoteClasses
 		public IEnumerable<Guid> getAllContractIDs
 		{
 			get { return allContracts.Keys; }
+		}
+
+		public bool Archived
+		{
+			get { return archived; }
 		}
 	}
 

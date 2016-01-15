@@ -10,6 +10,7 @@ namespace BetterNotes.NoteClasses
 	{
 		private Dictionary<uint, Notes_DataPart> allData = new Dictionary<uint, Notes_DataPart>();
 		private Dictionary<string, Notes_ReceivedData> returnedData = new Dictionary<string, Notes_ReceivedData>();
+		private bool archived;
 		public bool TransferActive { get; set; }
 
 		public Notes_DataContainer()
@@ -21,12 +22,27 @@ namespace BetterNotes.NoteClasses
 			vessel = n.NotesVessel;
 		}
 
+		public Notes_DataContainer(Notes_Archive_Container n)
+		{
+			archive_Root = n;
+			vessel = null;
+			archived = true;
+		}
+
 		public Notes_DataContainer(Notes_DataContainer copy, Notes_Container n)
 		{
 			allData = copy.allData;
 			returnedData = copy.returnedData;
 			root = n;
 			vessel = n.NotesVessel;
+		}
+
+		public Notes_DataContainer(Notes_DataContainer copy, Notes_Archive_Container n)
+		{
+			returnedData = copy.returnedData;
+			archive_Root = n;
+			vessel = null;
+			archived = true;
 		}
 
 		public int NotesDataCount
@@ -70,6 +86,9 @@ namespace BetterNotes.NoteClasses
 			if (vessel == null)
 				return;
 
+			if (archived)
+				return;
+
 			validParts.Clear();
 
 			for (int i = 0; i < vessel.Parts.Count; i++)
@@ -86,6 +105,9 @@ namespace BetterNotes.NoteClasses
 
 		protected override void updateValidParts()
 		{
+			if (archived)
+				return;
+
 			if (validParts.Count <= 0)
 				return;
 
@@ -129,6 +151,11 @@ namespace BetterNotes.NoteClasses
 				else if (allData.ContainsKey(p.flightID))
 					allData.Remove(p.flightID);
 			}
+		}
+
+		public bool Archived
+		{
+			get { return archived; }
 		}
 	}
 
