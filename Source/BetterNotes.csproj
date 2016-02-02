@@ -55,6 +55,7 @@
     <Compile Include="NoteClasses\CheckListHandler\Notes_CheckListHandler.cs" />
     <Compile Include="NoteClasses\CheckListHandler\Notes_CheckListMonoBehaviour.cs" />
     <Compile Include="NoteClasses\CheckListHandler\Notes_CheckListType.cs" />
+    <Compile Include="NoteClasses\Notes_Archive_Container.cs" />
     <Compile Include="NoteClasses\Notes_CheckListContainer.cs" />
     <Compile Include="NoteClasses\Notes_PartBase.cs" />
     <Compile Include="NoteClasses\Notes_Base.cs" />
