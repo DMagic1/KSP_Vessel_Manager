@@ -21,6 +21,9 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 		private static Dictionary<Guid, Notes_CheckListItem> dockAsteroidNotes = new Dictionary<Guid, Notes_CheckListItem>();
 		private static Dictionary<Guid, Notes_CheckListItem> blastOffNotes = new Dictionary<Guid,Notes_CheckListItem>();
 		private static Dictionary<Guid, Notes_CheckListItem> scienceNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> flagNotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> EVAnotes = new Dictionary<Guid, Notes_CheckListItem>();
+		private static Dictionary<Guid, Notes_CheckListItem> SpacewalkNotes = new Dictionary<Guid, Notes_CheckListItem>();
 
 		public static void registerEvents()
 		{
@@ -31,6 +34,8 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			GameEvents.onVesselLoaded.Add(onVesselLoad);
 			GameEvents.onVesselSituationChange.Add(onSituationChange);
 			GameEvents.OnScienceRecieved.Add(onScienceReceive);
+			GameEvents.onFlagPlant.Add(onFlagPlant);
+			GameEvents.onCrewOnEva.Add(onEVA);
 		}
 
 		public static void deRegisterEvents()
@@ -42,6 +47,8 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 			GameEvents.onVesselLoaded.Remove(onVesselLoad);
 			GameEvents.onVesselSituationChange.Remove(onSituationChange);
 			GameEvents.OnScienceRecieved.Remove(onScienceReceive);
+			GameEvents.onFlagPlant.Remove(onFlagPlant);
+			GameEvents.onCrewOnEva.Remove(onEVA);
 		}
 
 		public static void registerCheckList(Notes_CheckListItem n)
@@ -67,6 +74,18 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 				case Notes_CheckListType.land:
 					if (!landNotes.ContainsKey(n.ID))
 						landNotes.Add(n.ID, n);
+					break;
+				case Notes_CheckListType.plantFlag:
+					if (!flagNotes.ContainsKey(n.ID))
+						flagNotes.Add(n.ID, n);
+					break;
+				case Notes_CheckListType.spacewalk:
+					if (!SpacewalkNotes.ContainsKey(n.ID))
+						SpacewalkNotes.Add(n.ID, n);
+					break;
+				case Notes_CheckListType.surfaceEVA:
+					if (!EVAnotes.ContainsKey(n.ID))
+						EVAnotes.Add(n.ID, n);
 					break;
 				case Notes_CheckListType.returnHome:
 					if (!returnHomeNotes.ContainsKey(n.ID))
@@ -125,6 +144,18 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 				case Notes_CheckListType.land:
 					if (landNotes.ContainsKey(n.ID))
 						landNotes.Remove(n.ID);
+					break;
+				case Notes_CheckListType.plantFlag:
+					if (flagNotes.ContainsKey(n.ID))
+						flagNotes.Remove(n.ID);
+					break;
+				case Notes_CheckListType.spacewalk:
+					if (SpacewalkNotes.ContainsKey(n.ID))
+						SpacewalkNotes.Remove(n.ID);
+					break;
+				case Notes_CheckListType.surfaceEVA:
+					if (EVAnotes.ContainsKey(n.ID))
+						EVAnotes.Remove(n.ID);
 					break;
 				case Notes_CheckListType.returnHome:
 					if (returnHomeNotes.ContainsKey(n.ID))
@@ -427,6 +458,61 @@ namespace BetterNotes.NoteClasses.CheckListHandler
 
 						n.setComplete();
 					}
+				}
+			}
+		}
+
+		private static void onFlagPlant(Vessel v)
+		{
+			if (v == null)
+				return; ;
+
+			IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = flagNotes.Where(n => n.Value.TargetBody == v.mainBody);
+			for (int i = 0; i < notes.Count(); i++)
+			{
+				Notes_CheckListItem n = notes.ElementAt(i).Value;
+
+				if (n == null)
+					continue;
+
+				n.setComplete();
+			}
+		}
+
+		private static void onEVA(GameEvents.FromToAction<Part, Part> f)
+		{
+			if (f.from == null)
+				return;
+
+			if (f.from.vessel == null)
+				return;
+
+			Vessel.Situations sit = f.from.vessel.situation;
+
+			if (f.from.vessel.LandedOrSplashed)
+			{
+				IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = EVAnotes.Where(n => n.Value.TargetBody == f.from.vessel.mainBody);
+				for (int i = 0; i < notes.Count(); i++)
+				{
+					Notes_CheckListItem n = notes.ElementAt(i).Value;
+
+					if (n == null)
+						continue;
+
+					n.setComplete();
+				}
+			}
+			else if (sit == Vessel.Situations.ESCAPING || sit == Vessel.Situations.ORBITING || sit == Vessel.Situations.SUB_ORBITAL)
+			{
+				IEnumerable<KeyValuePair<Guid, Notes_CheckListItem>> notes = SpacewalkNotes.Where(n => n.Value.TargetBody == f.from.vessel.mainBody);
+				for (int i = 0; i < notes.Count(); i++)
+				{
+					Notes_CheckListItem n = notes.ElementAt(i).Value;
+
+					if (n == null)
+						continue;
+
+					n.setComplete();
 				}
 			}
 		}

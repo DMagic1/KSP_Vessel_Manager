@@ -44,6 +44,12 @@ namespace BetterNotes
 		[Persistent]
 		private string checkListTypeTitleScienceFromPlanet = "Return {0:F0} science data from {1}";
 		[Persistent]
+		private string checkListTypeTitleFlag = "Plant a flag on {0}";
+		[Persistent]
+		private string checkListTypeTitleEVA = "Conduct a surface EVA on {0}";
+		[Persistent]
+		private string checkListTypeTitleSpaceWalk = "Conduct a spacewalk at {0}";
+		[Persistent]
 		private string scienceTransferInstructions = "Select a science container to transfer {0} data to\n[Esc]: Cancel";
 		[Persistent]
 		private string scienceTransferFailFullContainer = "This container is full";
@@ -53,6 +59,7 @@ namespace BetterNotes
 		private string scienceTransferSuccess = "Transfered Science Data to this container";
 		[Persistent]
 		private string scienceTransferInterrupted = "Science transfer was interrupted...";
+
 
 		public override void OnDecodeFromConfigNode()
 		{
@@ -166,6 +173,21 @@ namespace BetterNotes
 		public string CheckListTypeTitleScienceFromPlanet
 		{
 			get { return checkListTypeTitleScienceFromPlanet;}
+		}
+
+		public string CheckListTypeTitleFlag
+		{
+			get { return checkListTypeTitleFlag; }
+		}
+
+		public string CheckListTypeTitleEVA
+		{
+			get { return checkListTypeTitleEVA; }
+		}
+
+		public string CheckListTypeTitleSpaceWalk
+		{
+			get { return checkListTypeTitleSpaceWalk; }
 		}
 
 		public string ScienceTransferInstructions

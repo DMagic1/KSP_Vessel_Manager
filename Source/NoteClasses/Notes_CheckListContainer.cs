@@ -84,6 +84,7 @@ namespace BetterNotes.NoteClasses
 		private Guid id;
 		private string text;
 		private bool complete;
+		private double completeTime;
 		private float? data;
 		private Vessel targetVessel;
 		private CelestialBody targetBody;
@@ -92,14 +93,17 @@ namespace BetterNotes.NoteClasses
 
 		private static bool loaded = false;
 
-		private static string checkListTypeTitleLaunch = "Launch from {0}";		
-		private static string checkListTypeTitleOrbit = "Orbit {0}";		
-		private static string checkListTypeTitleEnterOrbit = "Enter orbit around {0}";		
-		private static string checkListTypeTitleReturnToOrbit = "Return to orbit from {0}";		
-		private static string checkListTypeTitleLand = "Land on {0}";		
-		private static string checkListTypeTitleReturnHome = "Return to {0}";		
-		private static string checkListTypeTitleRendezvousVessel = "Rendezvous with {0}\n(Approach to within 2.4km)";		
-		private static string checkListTypeTitleDockVessel = "Dock with {0}";		
+		private static string checkListTypeTitleLaunch = "Launch from {0}";
+		private static string checkListTypeTitleOrbit = "Orbit {0}";
+		private static string checkListTypeTitleEnterOrbit = "Enter orbit around {0}";
+		private static string checkListTypeTitleReturnToOrbit = "Return to orbit from {0}";
+		private static string checkListTypeTitleLand = "Land on {0}";
+		private static string checkListTypeTitleFlag = "Plant a flag on {0}";
+		private static string checkListTypeTitleEVA = "Conduct a surface EVA on {0}";
+		private static string checkListTypeTitleSpaceWalk = "Conduct a spacewalk at {0}";
+		private static string checkListTypeTitleReturnHome = "Return to {0}";
+		private static string checkListTypeTitleRendezvousVessel = "Rendezvous with {0}\n(Approach to within 2.4km)";
+		private static string checkListTypeTitleDockVessel = "Dock with {0}";
 		private static string checkListTypeTitleRendezvousAsteroid = "Rendezvous with {0}\n(Approach to within 2.4km)";
 		private static string checkListTypeTitleDockAsteroid = "Grab {0}";
 		private static string checkListTypeTitleBlastOff = "Take off from {0}";
@@ -138,6 +142,9 @@ namespace BetterNotes.NoteClasses
 				case Notes_CheckListType.returnToOrbit:
 				case Notes_CheckListType.blastOff:
 				case Notes_CheckListType.scienceFromPlanet:
+				case Notes_CheckListType.spacewalk:
+				case Notes_CheckListType.surfaceEVA:
+				case Notes_CheckListType.plantFlag:
 					targetBody = targetB;
 					targetVessel = null;
 					break;
@@ -157,7 +164,7 @@ namespace BetterNotes.NoteClasses
 			Notes_CheckListTypeHandler.registerCheckList(this);
 		}
 
-		public Notes_CheckListItem(string t, int i, bool b, Vessel targetV, CelestialBody targetB, Guid g, Notes_CheckListType y, Notes_CheckListContainer r, float? d)
+		public Notes_CheckListItem(string t, int i, bool b, Vessel targetV, CelestialBody targetB, Guid g, Notes_CheckListType y, Notes_CheckListContainer r, float? d, double c)
 		{
 			if (!loaded)
 				loadStrings();
@@ -168,6 +175,7 @@ namespace BetterNotes.NoteClasses
 			checkType = y;
 			root = r;
 			data = d;
+			completeTime = c;
 
 			if (root.Archived)
 				return;
@@ -198,11 +206,15 @@ namespace BetterNotes.NoteClasses
 			checkListTypeTitleBlastOff = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleBlastOff;
 			checkListTypeTitleScience = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleScience;
 			checkListTypeTitleScienceFromPlanet = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleScienceFromPlanet;
+			checkListTypeTitleEVA = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleEVA;
+			checkListTypeTitleFlag = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleFlag;
+			checkListTypeTitleSpaceWalk = Notes_MainMenu.Active_Localization_Pack.CheckListTypeTitleSpaceWalk;
 		}
 
 		public void setComplete()
 		{
 			complete = true;
+			completeTime = Planetarium.GetUniversalTime();
 			Notes_CheckListTypeHandler.deRegisterCheckList(this);
 		}
 
@@ -236,6 +248,12 @@ namespace BetterNotes.NoteClasses
 					return string.Format(checkListTypeTitleScience, data);
 				case Notes_CheckListType.scienceFromPlanet:
 					return string.Format(checkListTypeTitleScienceFromPlanet, data, targetBody.theName);
+				case Notes_CheckListType.plantFlag:
+					return string.Format(checkListTypeTitleFlag, targetBody.theName);
+				case Notes_CheckListType.surfaceEVA:
+					return string.Format(checkListTypeTitleEVA, targetBody.theName);
+				case Notes_CheckListType.spacewalk:
+					return string.Format(checkListTypeTitleSpaceWalk, targetBody.theName);
 				default:
 					return custom;
 			}
@@ -270,6 +288,27 @@ namespace BetterNotes.NoteClasses
 		public bool Complete
 		{
 			get { return complete; }
+		}
+
+		public double CompleteTime
+		{
+			get { return completeTime; }
+		}
+
+		public string CompleteDate
+		{
+			get { return KSPUtil.PrintDateCompact((int)completeTime, false); }
+		}
+
+		public int[] CompleteTimeInt
+		{
+			get
+			{
+				if (GameSettings.KERBIN_TIME)
+					return KSPUtil.GetKerbinDateFromUT((int)completeTime);
+				else
+					return KSPUtil.GetEarthDateFromUT((int)completeTime);
+			}
 		}
 
 		public Guid ID

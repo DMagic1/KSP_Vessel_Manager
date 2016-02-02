@@ -297,6 +297,9 @@ namespace BetterNotes
 				string text = checkListItem.GetValue("NOTE");
 				int order = checkListItem.parse("ORDER", j);
 				bool complete = checkListItem.parse("COMPLETE", false);
+				double completeTime = 0;
+				if (complete)
+					completeTime = checkListItem.parse("COMPLETE_TIME", 0d);
 				float? data = checkListItem.parse("DATA", (float?)null);
 				Guid id = checkListItem.parse("KEY", Guid.NewGuid());
 				Notes_CheckListType type = checkListItem.parse("TYPE", Notes_CheckListType.custom);
@@ -327,6 +330,9 @@ namespace BetterNotes
 						case Notes_CheckListType.blastOff:
 						case Notes_CheckListType.returnToOrbit:
 						case Notes_CheckListType.scienceFromPlanet:
+						case Notes_CheckListType.surfaceEVA:
+						case Notes_CheckListType.spacewalk:
+						case Notes_CheckListType.plantFlag:
 							if (targetB == null)
 								continue;
 							break;
@@ -338,7 +344,7 @@ namespace BetterNotes
 					}
 				}
 
-				Notes_CheckListItem newCheckListItem = new Notes_CheckListItem(text, order, complete, targetV, targetB, id, type, c, data);
+				Notes_CheckListItem newCheckListItem = new Notes_CheckListItem(text, order, complete, targetV, targetB, id, type, c, data, completeTime);
 
 				c.addCheckList(newCheckListItem);
 			}
@@ -564,6 +570,8 @@ namespace BetterNotes
 				checkItem.AddValue("ORDER", c.Order);
 				checkItem.AddValue("NOTE", c.Text);
 				checkItem.AddValue("COMPLETE", c.Complete);
+				if (c.Complete)
+					checkItem.AddValue("COMPLETE_TIME", c.CompleteTime.ToString("F2"));
 				checkItem.AddValue("TYPE", c.CheckType);
 
 				switch (c.CheckType)
@@ -583,6 +591,9 @@ namespace BetterNotes
 					case Notes_CheckListType.enterOrbit:
 					case Notes_CheckListType.returnToOrbit:
 					case Notes_CheckListType.returnHome:
+					case Notes_CheckListType.plantFlag:
+					case Notes_CheckListType.spacewalk:
+					case Notes_CheckListType.surfaceEVA:
 						if (c.TargetBody == null)
 							continue;
 						checkItem.AddValue("TARGET_BODY", c.TargetBody.name);
