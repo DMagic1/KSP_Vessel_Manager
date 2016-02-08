@@ -11,10 +11,10 @@ namespace BetterNotes
 	{
 		private bool loaded;
 
-		private const string settingsFilePath = "BetterNotes/Settings";
+		private const string settingsFilePath = "DMagicUtilities/BetterNotes/Settings";
 		private const string settingsNode = "Notes_Settings";
 
-		private const string localizationFilePath = "BetterNotes/Localization";
+		private const string localizationFilePath = "DMagicUtilities/BetterNotes/Localization";
 		private const string localizationNode = "Notes_Localization";
 
 		private static bool contractsPlusLoaded;

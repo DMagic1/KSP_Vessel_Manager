@@ -29,17 +29,17 @@ namespace BetterNotes
 
 		private void loadTextures()
 		{
-			pilotIcon = GameDatabase.Instance.GetTexture("", false);
-			engineerIcon = GameDatabase.Instance.GetTexture("", false);
-			scientistIcon = GameDatabase.Instance.GetTexture("", false);
-			touristIcon = GameDatabase.Instance.GetTexture("", false);
-			defaultIcon = GameDatabase.Instance.GetTexture("", false);
-			levelZero = GameDatabase.Instance.GetTexture("", false);
-			levelOne = GameDatabase.Instance.GetTexture("", false);
-			levelTwo = GameDatabase.Instance.GetTexture("", false);
-			levelThree = GameDatabase.Instance.GetTexture("", false);
-			levelFour = GameDatabase.Instance.GetTexture("", false);
-			levelFive = GameDatabase.Instance.GetTexture("", false);
+			pilotIcon = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			engineerIcon = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			scientistIcon = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			touristIcon = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			defaultIcon = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelZero = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelOne = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelTwo = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelThree = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelFour = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
+			levelFive = GameDatabase.Instance.GetTexture("DMagicUtilities/BetterNotes/", false);
 		}
 
 	}
