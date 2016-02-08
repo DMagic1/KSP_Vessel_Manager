@@ -7,6 +7,8 @@ using BetterNotes.Framework;
 using BetterNotes.NoteClasses;
 using BetterNotes.NoteClasses.CheckListHandler;
 using Contracts;
+using ContractParser;
+using ProgressParser;
 
 namespace BetterNotes
 {
@@ -20,7 +22,6 @@ namespace BetterNotes
 		private Dictionary<Guid, Vessel> allVessels = new Dictionary<Guid, Vessel>();
 		private Dictionary<Guid, Notes_Archive_Container> archivedNotes = new Dictionary<Guid, Notes_Archive_Container>();
 		private Dictionary<Guid, Notes_Container> allNotes = new Dictionary<Guid, Notes_Container>();
-		private Dictionary<Guid, Notes_ContractInfo> allContracts = new Dictionary<Guid, Notes_ContractInfo>();
 		private Dictionary<string, List<Guid>> CWmissionLists = new Dictionary<string, List<Guid>>();
 
 		private Vessel activeVessel;
@@ -97,26 +98,6 @@ namespace BetterNotes
 			return null;
 		}
 
-		public void addContract(Notes_ContractInfo C)
-		{
-			if (!allContracts.ContainsKey(C.ID))
-				allContracts.Add(C.ID, C);
-		}
-
-		public void removeContract(Notes_ContractInfo C)
-		{
-			if (allContracts.ContainsKey(C.ID))
-				allContracts.Remove(C.ID);
-		}
-
-		public Notes_ContractInfo getContract(Guid id)
-		{
-			if (allContracts.ContainsKey(id))
-				return allContracts[id];
-
-			return null;
-		}
-
 		protected override void Start()
 		{
 			if (!loaded)
@@ -139,7 +120,8 @@ namespace BetterNotes
 			GameEvents.onVesselRecovered.Add(onVesselRecovered);
 			GameEvents.Contract.onAccepted.Add(onAddContract);
 			GameEvents.Contract.onFinished.Add(onFinishContract);
-			GameEvents.Contract.onContractsLoaded.Add(onLoadContracts);
+			contractParser.onContractsParsed.Add(onLoadContracts);
+			progressParser.onProgressParsed.Add(onLoadProgress);
 
 			Notes_CheckListTypeHandler.registerEvents();
 
@@ -169,7 +151,8 @@ namespace BetterNotes
 			GameEvents.onVesselRecovered.Add(onVesselRecovered);
 			GameEvents.Contract.onAccepted.Remove(onAddContract);
 			GameEvents.Contract.onFinished.Remove(onFinishContract);
-			GameEvents.Contract.onContractsLoaded.Remove(onLoadContracts);
+			contractParser.onContractsParsed.Remove(onLoadContracts);
+			progressParser.onProgressParsed.Remove(onLoadProgress);
 
 			Notes_CheckListTypeHandler.deRegisterEvents();
 
@@ -179,20 +162,11 @@ namespace BetterNotes
 
 		private void onAddContract(Contract c)
 		{
-			Notes_ContractInfo N = new Notes_ContractInfo(c);
-
-			addContract(N);
-
 			refreshContracts();
 		}
 
 		private void onFinishContract(Contract c)
 		{
-			Notes_ContractInfo C = getContract(c.ContractGuid);
-
-			if (C != null)
-				removeContract(C);
-
 			refreshContracts();
 		}
 
@@ -251,12 +225,30 @@ namespace BetterNotes
 			Notes_Archive_Container n = new Notes_Archive_Container(v.vesselID, v.vesselName, Planetarium.GetUniversalTime(), v.missionTime, v.vesselType);
 
 			n.loadCheckList(container.CheckList);
-			n.loadContracts(container.Contracts, container.Contracts.getAllContractIDs.ToList());
+			n.loadContracts(container.Contracts, container.Contracts.getAllActiveContractIDs.ToList());
 			n.loadDataNotes(container.Data);
 			n.loadTextNotes(container.Notes);
 			n.loadVesselLog(container.Log);
 
 			addArchivedNotes(n);
+		}
+
+		private void onLoadProgress()
+		{
+			StartCoroutine(loadProgress());
+		}
+
+		private IEnumerator loadProgress()
+		{
+			int i = 0;
+
+			while (!progressParser.Loaded && i < 200)
+			{
+				i++;
+				yield return null;
+			}
+
+
 		}
 
 		private void onLoadContracts()
@@ -267,33 +259,6 @@ namespace BetterNotes
 		private IEnumerator loadContracts()
 		{
 			int t = 0;
-
-			//Agency modifiers don't seem to work unless I wait a few frames before loading contracts
-			while (t < 5)
-			{
-				t++;
-				yield return null;
-			}
-
-			for (int i = 0; i < ContractSystem.Instance.Contracts.Count; i++)
-			{
-				Contract c = ContractSystem.Instance.Contracts[i];
-
-				if (c == null)
-					continue;
-
-				Notes_ContractInfo n = new Notes_ContractInfo(c);
-
-				if (c == null)
-					continue;
-
-				if (c.Root == null)
-					continue;
-
-				addContract(n);
-			}
-
-			LogFormatted("{0} Contracts Loaded", allContracts.Count);
 
 			foreach (Notes_Container n in allNotes.Values)
 			{
