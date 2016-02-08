@@ -71,7 +71,11 @@ namespace BetterNotes
 					{
 						Notes_ContractContainer c = new Notes_ContractContainer();
 
-						n.loadContracts(c, loadContracts(contracts));
+						if (contracts.HasValue("CONTRACTS"))
+							n.loadContracts(c, loadContracts(contracts));
+
+						if (contracts.HasValue("COMPLETED_CONTRACTS"))
+							n.loadContracts(c, loadCompletedContracts(contracts));
 					}
 
 					ConfigNode dataNotes = vesselNotes.GetNode("VESSEL_SCIENCE_DATA");
@@ -152,7 +156,11 @@ namespace BetterNotes
 					{
 						Notes_ContractContainer c = new Notes_ContractContainer();
 
-						n.loadContracts(c, loadContracts(contracts));
+						if (contracts.HasValue("CONTRACTS"))
+							n.loadContracts(c, loadContracts(contracts));
+
+						if (contracts.HasValue("COMPLETED_CONTRACTS"))
+							n.loadContracts(c, loadCompletedContracts(contracts));
 					}
 
 					ConfigNode dataNotes = vesselNotes.GetNode("VESSEL_SCIENCE_DATA");
@@ -222,6 +230,11 @@ namespace BetterNotes
 		{
 			return node.parse("CONTRACTS", new List<Guid>());
 		}
+
+		private List<Guid> loadCompletedContracts(ConfigNode node)
+		{
+			return node.parse("COMPLETED_CONTRACTS", new List<Guid>());
+		}		
 
 		private Notes_DataContainer loadData(ConfigNode node)
 		{
@@ -386,7 +399,7 @@ namespace BetterNotes
 					saveStats(vesselNotes, n.Stats);
 				}
 
-				if (n.Contracts != null && n.Contracts.contractCount > 0)
+				if (n.Contracts != null && (n.Contracts.activeContractCount > 0 || n.Contracts.completedContractCount > 0))
 				{
 					saveContracts(vesselNotes, n.Contracts);
 				}
@@ -437,7 +450,7 @@ namespace BetterNotes
 					saveCrew(archivedVesselNotes, n.Crew);
 				}
 
-				if (n.Contracts != null && n.Contracts.contractCount > 0)
+				if (n.Contracts != null && (n.Contracts.activeContractCount > 0 || n.Contracts.completedContractCount > 0))
 				{
 					saveContracts(archivedVesselNotes, n.Contracts);
 				}
@@ -501,8 +514,11 @@ namespace BetterNotes
 		{
 			ConfigNode contracts = new ConfigNode("VESSEL_CONTRACTS");
 
-			contracts.AddValue("CONTRACTS", c.getAllContractIDs.stringConcat());
+			if (c.activeContractCount > 0)
+				contracts.AddValue("CONTRACTS", c.getAllActiveContractIDs.stringConcat());
 
+			if (c.completedContractCount > 0)
+				contracts.AddValue("COMPLETED_CONTRACTS", c.getAllCompletedContractIDs.stringConcat());
 
 			node.AddNode(contracts);
 		}
