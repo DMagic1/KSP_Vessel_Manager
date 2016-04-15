@@ -215,7 +215,7 @@ namespace BetterNotes
 			n.Data.addReturnedData(o);
 		}
 
-		private void onVesselRecovered(ProtoVessel v)
+		private void onVesselRecovered(ProtoVessel v, bool q)
 		{
 			Notes_Container container = getNotes(v.vesselID);
 
