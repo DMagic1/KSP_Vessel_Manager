@@ -43,7 +43,7 @@ namespace BetterNotes
 		public void Dismiss(CrewTransfer.DismissAction action)
 		{
 			if (action == CrewTransfer.DismissAction.Interrupted)
-				ScreenMessages.PostScreenMessage(scienceTransferInterrupted, transferMessage, true);
+				ScreenMessages.PostScreenMessage(scienceTransferInterrupted, transferMessage);
 			onDismiss(action);
 			ScreenMessages.RemoveMessage(instructionMessage);
 			Destroy(this);
@@ -74,7 +74,7 @@ namespace BetterNotes
 			GameEvents.onVesselSituationChange.Add(onSituationChange);
 			GameEvents.OnExperimentDeployed.Add(onExperimentDeployed);
 
-			ScreenMessages.PostScreenMessage(string.Format(scienceTransferInstructions, dataCount), instructionMessage, false);
+			ScreenMessages.PostScreenMessage(string.Format(scienceTransferInstructions, dataCount), instructionMessage);
 
 			parts = new List<PartSelector>();
 
@@ -109,7 +109,7 @@ namespace BetterNotes
 		private void transferScience(ModuleScienceContainer container)
 		{
 			container.StoreData(containers, false);
-			ScreenMessages.PostScreenMessage(scienceTransferSuccess, transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferSuccess, transferMessage);
 			Dismiss(CrewTransfer.DismissAction.CrewMoved);
 		}
 
@@ -119,7 +119,7 @@ namespace BetterNotes
 
 			if (m == null)
 			{
-				ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage, true);
+				ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage);
 				return;
 			}
 
@@ -128,12 +128,12 @@ namespace BetterNotes
 
 		private void onFullContainerSelect(Part p)
 		{
-			ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferFailFullContainer, transferMessage);
 		}
 
 		private void onSourceContainerSelect(Part p)
 		{
-			ScreenMessages.PostScreenMessage(scienceTransferFailSourceContainer, transferMessage, true);
+			ScreenMessages.PostScreenMessage(scienceTransferFailSourceContainer, transferMessage);
 		}
 
 		private void onVesselModified(Vessel v)
