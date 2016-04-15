@@ -305,9 +305,9 @@ namespace BetterNotes.NoteClasses
 			get
 			{
 				if (GameSettings.KERBIN_TIME)
-					return KSPUtil.GetKerbinDateFromUT((int)completeTime);
+					return ((KSPUtil.DefaultDateTimeFormatter)KSPUtil.dateTimeFormatter).GetKerbinDateFromUT((int)completeTime);
 				else
-					return KSPUtil.GetEarthDateFromUT((int)completeTime);
+					return ((KSPUtil.DefaultDateTimeFormatter)KSPUtil.dateTimeFormatter).GetEarthDateFromUT((int)completeTime);
 			}
 		}
 
